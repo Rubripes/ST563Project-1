@@ -8,6 +8,8 @@ editor: visual
 Let's load necessary libraries before we begin:
 ```{r}
 library(tidyverse)
+library(caret)
+library(rstatix)
 ```
 
 
@@ -65,6 +67,9 @@ write_csv(d, "names.csv")
 
 ```{r}
 #use rename() to rename variables
+#create list of variables to coerce to fctr
+factors <- c("bankrupt", "liabAstsFlag", "netIncFlag")
+
 data1 <- data |>
   rename(
     "bankrupt" =	"Bankrupt.",
@@ -163,25 +168,92 @@ data1 <- data |>
     "intCovRatioIntExpToEBIT" =	"Interest.Coverage.Ratio..Interest.expense.to.EBIT.",
     "netIncFlag" =	"Net.Income.Flag",
     "eqToLiab" =	"Equity.to.Liability"
-  )
+  ) |>
+  mutate_at(factors, factor)
 ```
 
 ```{r}
-names(data1)
+str(data1)
 ```
+
+Now, let's check to see if the factor variables make sense:
+```{r}
+#check for unique values in the flag variables
+ua <- unique(data1$liabAstsFlag)
+ub <- unique(data1$netIncFlag)
+
+uab <- rbind(ua, ub)
+uab
+```
+A value of 1 in all rows of netIncFlag does not add any value, we'll remove this from the table.
+```{r}
+data2 <- data1 |>
+  select(-"netIncFlag")
+names(data2)
+```
+
+
+
 During initial evaluation of potential dataset to use for this project, I briefly tried to model the `{r} dataset` dataset using a logistic regression model and it did not converge.  We'll reproduce that here:
 ```{r}
 #quick test fit using all variables with logistic regression model
-logitMod <- glm(bankrupt ~ ., data = data1, family=binomial())
+logitMod <- glm(bankrupt ~ ., data = data2, family=binomial())
 ```
-This is the same warning I got in my original evaluation of the datasets, "algoritm did not converge".  This may be due to collinearity between the myriad variables.  I will check out the covariance matrix to see if we can identify some variables to remove.
+This is the same warning I got in my original evaluation of the datasets, "algoritm did not converge".  This may be due to collinearity between the myriad variables.  
 
 ```{r}
-fullCorr <- cor(data1)
-fullCorr
+#create data frame of numeric values without the factors for evaluation of correlation
+numData <- data2 |>
+  select(where(is.numeric))
+fullCorr <- (cor(numData))
+longCorr <- cor_gather(fullCorr)
+longCorr1 <- longCorr |>
+  arrange(desc(cor)) |>
+  filter(cor < 1 & cor > 0.7)
+  
+longCorr1
 ```
+I've tabled correlation for values less than 1.0, which would be self correlation (diagonal values), and arbitrarily set correlation to be greater than 0.7.  This will creat a range of correlation values where we can at least evalute the variables and see if it is clear that they may be a linear combination of a correlated variable.
+
 ```{r}
 abs(fullCorr)>0.7
 ```
+
+There are many values that show high correlation (corr>0.7).  Let's see if we can manage with regularization and non-parametric models first.
+
+
+### Creation of Training and Test Splits
+First we'll create a training and test split with 70% of the data in the training dataset and 30% in the test dataset.  
+```{r}
+set.seed(10)
+train_index <- createDataPartition(data2$bankrupt, p=0.7, list=FALSE)
+bankrupt_train <- data2[train_index, ]
+bankrupt_test <- data2[-train_index, ]
+head(bankrupt_train)
+```
+
+Let's try KNN first to see if that model will work with this many variables:
+```{r}
+#set seed for cv fold generation
+set.seed(10)
+#create grid for evaluating k
+kgrid <- expand.grid(k=seq(1,50, by=1))
+#create knn model with 10 fold cv
+knnMod <- train(bankrupt ~ .,
+              data = bankrupt_train,
+              method = "knn",
+              tuneGrid = kgrid,
+              trControl = trainControl(method = "CV",
+                                       number = 10))
+knnMod
+```
+This looks like it is being overfit with the optimal value of k=50, but with the presented precision, does not appear to reach a maximum.  Prediction appears to be very high starting at k=11 and does not appear to increase, however, additional precision in the model output says that the training accuracy increased up to k=`{r} knnMod$bestTune`.
+
+Let's show this visually:
+```{r}
+plot(knnMod)
+```
+
+
 
 
