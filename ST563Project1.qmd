@@ -6,12 +6,12 @@ editor: visual
 ---
 
 Let's load necessary libraries before we begin:
+
 ```{r}
 library(tidyverse)
 library(caret)
 library(rstatix)
 ```
-
 
 ```{r}
 #shorten name of the dataset for ease of use throughout text
@@ -43,33 +43,41 @@ Being able to understand how the different metrics related to bankruptcy status 
 One caveat to point out is that the Taiwanese GAAP [2](https://www.china-briefing.com/news/china-gaap-vs-u-s-gaap-and-ifrs/) (generally accepted accounting principles) may be different than those in the US and understanding these differences are beyond the scope of this project. This means the model determined as "best" from this `{r} dataset` dataset may not predict in a similar fashion with data obtained in the United States. Further analyses on US based companies would likely be necessary to provide better prediction in the United States.
 
 ### Data Cleaning and Organization
-Before analyzing the data in the models, we need to make some transformations to make the variables easier to manage and we need to reduce the number of variables in total.  
+
+Before analyzing the data in the models, we need to make some transformations to make the variables easier to manage and we need to reduce the number of variables in total.
 
 First, let's see what the data structure is:
+
 ```{r}
 str(data)
 ```
-There are three integer variables (1 is the response, 2 are flag values).  The rest of the varaiables are numeric.
+
+There are three integer variables (1 is the response, 2 are flag values). The rest of the varaiables are numeric.
 
 Next, we need to check for missing values:
+
 ```{r}
 #sum columns values of na
 colSums(is.na(data))
 ```
-There is no missing data.  This matches the description of the dataset from the source.
 
-These variable names are long and difficult to read.  Next, let's rename the variables for ease of use further downstream.
+There is no missing data. This matches the description of the dataset from the source.
+
+These variable names are long and difficult to read. Next, let's rename the variables for ease of use further downstream.
+
 ```{r}
 #move names out to csv for easier human readable format and to create new vector of names
 d <- as.data.frame(names(data))
 write_csv(d, "names.csv")
 ```
 
+Since the output is difficult to read, I moved the variables to a csv file and opened in excel to look through the named variables and decide on what to call them.  I've mapped these new names to the existing variables below using the Tidyverse.  I've also coerced the integer variables to factors.
 ```{r}
 #use rename() to rename variables
 #create list of variables to coerce to fctr
 factors <- c("bankrupt", "liabAstsFlag", "netIncFlag")
 
+#rename the variables
 data1 <- data |>
   rename(
     "bankrupt" =	"Bankrupt.",
@@ -173,10 +181,12 @@ data1 <- data |>
 ```
 
 ```{r}
-str(data1)
+#I used this code chunk to check the output from above, but it is large and messy and hard to read.  I've silenced this code for publication.
+#str(data1)
 ```
 
 Now, let's check to see if the factor variables make sense:
+
 ```{r}
 #check for unique values in the flag variables
 ua <- unique(data1$liabAstsFlag)
@@ -185,21 +195,23 @@ ub <- unique(data1$netIncFlag)
 uab <- rbind(ua, ub)
 uab
 ```
+
 A value of 1 in all rows of netIncFlag does not add any value, we'll remove this from the table.
+
 ```{r}
 data2 <- data1 |>
   select(-"netIncFlag")
 names(data2)
 ```
 
+During initial evaluation of potential dataset to use for this project, I briefly tried to model the `{r} dataset` dataset using a logistic regression model and it did not converge. We'll reproduce that here:
 
-
-During initial evaluation of potential dataset to use for this project, I briefly tried to model the `{r} dataset` dataset using a logistic regression model and it did not converge.  We'll reproduce that here:
 ```{r}
 #quick test fit using all variables with logistic regression model
 logitMod <- glm(bankrupt ~ ., data = data2, family=binomial())
 ```
-This is the same warning I got in my original evaluation of the datasets, "algoritm did not converge".  This may be due to collinearity between the myriad variables.  
+
+This is the same warning I got in my original evaluation of the datasets, "algoritm did not converge". This may be due to collinearity between the myriad variables.
 
 ```{r}
 #create data frame of numeric values without the factors for evaluation of correlation
@@ -207,23 +219,45 @@ numData <- data2 |>
   select(where(is.numeric))
 fullCorr <- (cor(numData))
 longCorr <- cor_gather(fullCorr)
+#sort and filter correlation 
 longCorr1 <- longCorr |>
   arrange(desc(cor)) |>
   filter(cor < 1 & cor > 0.7)
   
 longCorr1
 ```
-I've tabled correlation for values less than 1.0, which would be self correlation (diagonal values), and arbitrarily set correlation to be greater than 0.7.  This will creat a range of correlation values where we can at least evalute the variables and see if it is clear that they may be a linear combination of a correlated variable.
+
+I've tabled correlation for values less than 1.0, which would be self correlation (diagonal values), and arbitrarily set correlation to be greater than 0.7 for visualization. This will create a range of correlation values where we can at least evalute the variables and see if it is clear that they may be a linear combination of a correlated variable. Correlation between some variables that contain the same terms (eg. Liability, Gross Margin), seem to be strongly correlated. It makes sense that these could possibly be linear combinations of each other.
+
+Below is a visual demonstration of Principal Components Analysis output. The numeric data are centered and scaled, and each feature's contribution to overall variations in the dataset are determined. The proportion of the variability explained can be used to reduce the dimensionality. We will use this concept in the kNN model training.
 
 ```{r}
-abs(fullCorr)>0.7
+pca <- prcomp(numData, center=TRUE, scale.=TRUE)
 ```
 
-There are many values that show high correlation (corr>0.7).  Let's see if we can manage with regularization and non-parametric models first.
+Plot the Proportion of Variance Explained by Principal Components
 
+```{r}
+#square the sd and sum the vars to generate variance proportion attributable to each feature variable
+pcaData <- data.frame(
+  Component = 1:length(pca$sdev),
+  Variance = pca$sdev^2/sum(pca$sdev^2)
+)
+
+ggplot(pcaData, aes(x=Component, y=Variance)) +
+  geom_bar(stat = "identity", fill="red") +
+  geom_line() +
+  xlab("Principle Components") +
+  ylab("Proportion of Variance Explained") +
+  ggtitle("PCA Scree Plot")
+```
+
+This plot shows the proportion of the variability explained by the components \~70 and above are visually imperceptible.
 
 ### Creation of Training and Test Splits
-First we'll create a training and test split with 70% of the data in the training dataset and 30% in the test dataset.  
+
+First we'll create a training and test split with 70% of the data in the training dataset and 30% in the test dataset.
+
 ```{r}
 set.seed(10)
 train_index <- createDataPartition(data2$bankrupt, p=0.7, list=FALSE)
@@ -232,7 +266,13 @@ bankrupt_test <- data2[-train_index, ]
 head(bankrupt_train)
 ```
 
-Let's try KNN first to see if that model will work with this many variables:
+### k-Nearest Neighbors
+
+Let's try KNN first to see if that model will work with this many variables. The k-Nearest Neighbors (kNN) model is a non-parametric model that uses the tuning parameter k to evaluate each k-nearest values. In the case of classification tasks (which is what we are doing here), for each value of k, the majority of the k-nearest values determines the class. For example, with k=1, each observation determines the class of itself. If k=3, then if 2 of the observations are class=0 and 1 observation is class=1, then the majority rule is that that combination of predictors will be classified as class=0. This model by itself does not perform variable selection, but we have included Principle Components Analysis (PCA) as a preprocessing step in the model training below, which does perform variable selection. This is necessary due to the highly correlated nature of this dataset.
+
+For the purposes of using PCA, we will center and scale the data.  This is not strictly necessary if we are using kNN modeling without PCA.
+
+We will tune the optimal value of the tuning parameter (k) based on the training accuracy.
 ```{r}
 #set seed for cv fold generation
 set.seed(10)
@@ -243,16 +283,52 @@ knnMod <- train(bankrupt ~ .,
               data = bankrupt_train,
               method = "knn",
               tuneGrid = kgrid,
+              preProcess = c("center", "scale", "pca"),
               trControl = trainControl(method = "CV",
-                                       number = 10))
-knnMod
+                                      number = 10,
+                                      ))
+knnMod$bestTune
+
 ```
-This looks like it is being overfit with the optimal value of k=50, but with the presented precision, does not appear to reach a maximum.  Prediction appears to be very high starting at k=11 and does not appear to increase, however, additional precision in the model output says that the training accuracy increased up to k=`{r} knnMod$bestTune`.
+
+This looks like the best training accuracy is for k=`{r} knnMod$bestTune`.  
 
 Let's show this visually:
+
 ```{r}
 plot(knnMod)
 ```
+
+We'll also calculate the NIR (no information rate), which is just the proportion of the observations that fall in the most prevalent category. The model above should perform better than the NIR, or it is of no value.
+
+```{r}
+trainClassProp <- table(bankrupt_train$bankrupt)
+trainClassProp
+dim(trainClassProp)
+```
+
+The most prevalent class is non-bankrupt company (this should be true in the training and test sets, since we split the data to have balanced proporations of the dependent variable, `bankrupt`.)
+
+```{r}
+#training NIR
+NIRknnTrain <- (trainClassProp[1]/nrow(bankrupt_train))
+NIRknnTrain
+```
+
+The NIR for the kNN model is `{r} NIRknnTrain`.  The accuracy of the best tuned kNN model is `{r} knnMod$results[10,2]`.  This is not a large improvement in training accuracy.  We'll see later if the test accuracy changes.
+
+We'll predict with the best kNN model on the entire training dataset.
+```{r}
+#use predict() to evaluate model on training dataset
+knnTrain <- predict(knnMod, newdata = bankrupt_train)
+postResample(knnTrain, obs = bankrupt_train$bankrupt)
+knnConf <-confusionMatrix(knnTrain, bankrupt_train$bankrupt)
+knnConf
+```
+The accuracy of the tuned model is significantly different than the NIR at the alpha=0.05 confidence level.
+
+## Regularized Logistic Regression Model
+
 
 
 
