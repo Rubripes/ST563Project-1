@@ -1,0 +1,187 @@
+---
+title: "ST563Project1"
+author: "Matt Bray"
+format: html
+editor: visual
+---
+
+Let's load necessary libraries before we begin:
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+#shorten name of the dataset for ease of use throughout text
+dataset <- "Taiwanese Bankruptcy Prediction"
+#read in dataset
+data <- read.csv("./bankruptcy.csv")
+#create varirable describing length of dataset (nrow()).
+l <- nrow(data)
+#define number of response variables
+r <- 1
+#create variable to describe number of feature variables
+w <- length(names(data))-1
+```
+
+# Modeling of the "Taiwanese Bankruptcy Prediction" dataset
+
+## Introduction
+
+### Evaluating multiple models to determine the importance of the features to their ability to predict bankruptcy.
+
+The `{r} dataset` dataset was downloaded from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/572/taiwanese+bankruptcy+prediction). There are `{r} l` observations and `{r} w` feature variables. There is `{r} r` binary response variable(s), `"Bankrupt."`. The response variable takes on the values of `0` or `1` and respectively correspond to not going bankrupt and going bankrupt. The feature variables consist of many common business metrics.
+
+Due to the number of variables, we'll rename them for ease of use in this program. We will also evaluate for collinearity since many of the variables appear to be related based on my basic understanding of the terminology. I will choose a subset of the feature variables to evaluate for this project.
+
+The goal of this project is to see if we can predict whether or not a company will go bankrupt or not based on the data contained in this datset. In order to reach this goal, we will evaluate and tune multiple model families to see which model can predict the best, then at the end we will model the entire dataset. Our ability to model and predict bankruptcy is important to investors to be able to understand how their investments may perform based on common business metrics. An investor may be able to recoup some of their investment from a poorly performing investment, but bankruptcy may shield the investment from the ability of the investor to recoup any capitol and result in a large and maximal loss for the investor [1](https://www.uscourts.gov/court-programs/bankruptcy).
+
+Being able to understand how the different metrics related to bankruptcy status can also help investors, boards, and management make changes to the specific metric that could prevent bankruptcy in the future.
+
+One caveat to point out is that the Taiwanese GAAP [2](https://www.china-briefing.com/news/china-gaap-vs-u-s-gaap-and-ifrs/) (generally accepted accounting principles) may be different than those in the US and understanding these differences are beyond the scope of this project. This means the model determined as "best" from this `{r} dataset` dataset may not predict in a similar fashion with data obtained in the United States. Further analyses on US based companies would likely be necessary to provide better prediction in the United States.
+
+### Data Cleaning and Organization
+Before analyzing the data in the models, we need to make some transformations to make the variables easier to manage and we need to reduce the number of variables in total.  
+
+First, let's see what the data structure is:
+```{r}
+str(data)
+```
+There are three integer variables (1 is the response, 2 are flag values).  The rest of the varaiables are numeric.
+
+Next, we need to check for missing values:
+```{r}
+#sum columns values of na
+colSums(is.na(data))
+```
+There is no missing data.  This matches the description of the dataset from the source.
+
+These variable names are long and difficult to read.  Next, let's rename the variables for ease of use further downstream.
+```{r}
+#move names out to csv for easier human readable format and to create new vector of names
+d <- as.data.frame(names(data))
+write_csv(d, "names.csv")
+```
+
+```{r}
+#use rename() to rename variables
+data1 <- data |>
+  rename(
+    "bankrupt" =	"Bankrupt.",
+    "roaC" =	"ROA.C..before.interest.and.depreciation.before.interest",
+    "roaA" =	"ROA.A..before.interest.and...after.tax",
+    "roaB" =	"ROA.B..before.interest.and.depreciation.after.tax",
+    "opGrsMargin" =	"Operating.Gross.Margin",
+    "realSlsGrsMargin" =	"Realized.Sales.Gross.Margin",
+    "opPrftRate" =	"Operating.Profit.Rate",
+    "pTaxNetInt" =	"Pre.tax.net.Interest.Rate",
+    "aTaxNetInt" =	"After.tax.net.Interest.Rate",
+    "nonIndRevenue" =	"Non.industry.income.and.expenditure.revenue",
+    "contIntATax" =	"Continuous.interest.rate..after.tax.",
+    "opExpRate" =	"Operating.Expense.Rate",
+    "rndExpRate" =	"Research.and.development.expense.rate",
+    "cashFlRate" =	"Cash.flow.rate",
+    "intBearDbtInt" =	"Interest.bearing.debt.interest.rate",
+    "taxRateA" =	"Tax.rate..A.",
+    "nvpsB" =	"Net.Value.Per.Share..B.",
+    "nvpsA" =	"Net.Value.Per.Share..A.",
+    "nvpsC" =	"Net.Value.Per.Share..C.",
+    "pEPSl4S" =	"Persistent.EPS.in.the.Last.Four.Seasons",
+    "cfps" =	"Cash.Flow.Per.Share",
+    "rpsYuan" =	"Revenue.Per.Share..Yuan...",
+    "opPrftps" =	"Operating.Profit.Per.Share..Yuan...",
+    "psNetPftbTax" =	"Per.Share.Net.profit.before.tax..Yuan...",
+    "realSlsGrsPrftgRate" =	"Realized.Sales.Gross.Profit.Growth.Rate",
+    "OpPrftgRate" =	"Operating.Profit.Growth.Rate",
+    "aTaxNetPrftgRate" =	"After.tax.Net.Profit.Growth.Rate",
+    "regNetPrftgRate" =	"Regular.Net.Profit.Growth.Rate",
+    "contNetPrftgRate" =	"Continuous.Net.Profit.Growth.Rate",
+    "totAstgRate" =	"Total.Asset.Growth.Rate",
+    "netValgRate" =	"Net.Value.Growth.Rate",
+    "totAstRetGRRatio" =	"Total.Asset.Return.Growth.Rate.Ratio",
+    "cashReinvest" =	"Cash.Reinvestment..",
+    "curRatio" =	"Current.Ratio",
+    "quickRatio" =	"Quick.Ratio",
+    "intExpRatio" =	"Interest.Expense.Ratio",
+    "totDetTotNetWrth" =	"Total.debt.Total.net.worth",
+    "detRatio" =	"Debt.ratio..",
+    "netWrtAst" =	"Net.worth.Assets",
+    "ltFundSuitRatioA" =	"Long.term.fund.suitability.ratio..A.",
+    "borDepend" =	"Borrowing.dependency",
+    "contLiabNetWorth" =	"Contingent.liabilities.Net.worth",
+    "opPrftPaidCap" =	"Operating.profit.Paid.in.capital",
+    "netPrftBTaxPaidCap" =	"Net.profit.before.tax.Paid.in.capital",
+    "invtryAcctRecvNValue" =	"Inventory.and.accounts.receivable.Net.value",
+    "totAstTurnover" =	"Total.Asset.Turnover",
+    "acctRecTurnover" =	"Accounts.Receivable.Turnover",
+    "avgColctDays" =	"Average.Collection.Days",
+    "invtryTurnoverRateX" =	"Inventory.Turnover.Rate..times.",
+    "fixAstsTurnoverFreq" =	"Fixed.Assets.Turnover.Frequency",
+    "netWrtTurnoverRateX" =	"Net.Worth.Turnover.Rate..times.",
+    "revPerPerson" =	"Revenue.per.person",
+    "opPrftPerson" =	"Operating.profit.per.person",
+    "allRatePerson" =	"Allocation.rate.per.person",
+    "wrkCapTotAsts" =	"Working.Capital.to.Total.Assets",
+    "qckAstsTotAsts" =	"Quick.Assets.Total.Assets",
+    "curAstsTotAsts" =	"Current.Assets.Total.Assets",
+    "cashTotAsts" =	"Cash.Total.Assets",
+    "qckAstsCurLiab" =	"Quick.Assets.Current.Liability",
+    "cashCurLiab" =	"Cash.Current.Liability",
+    "curLiabToAsts" =	"Current.Liability.to.Assets",
+    "opFundToLiab" =	"Operating.Funds.to.Liability",
+    "invWrkCap" =	"Inventory.Working.Capital",
+    "invCurLiab" =	"Inventory.Current.Liability",
+    "curLiabLiab" =	"Current.Liabilities.Liability",
+    "wrkCapEq" =	"Working.Capital.Equity",
+    "curLiabEq" =	"Current.Liabilities.Equity",
+    "ltLiabToCurAsts" =	"Long.term.Liability.to.Current.Assets",
+    "retEarnToTotAsts" =	"Retained.Earnings.to.Total.Assets",
+    "totIncTotExp" =	"Total.income.Total.expense",
+    "totExpAsts" =	"Total.expense.Assets",
+    "curAstTurnoverRate" =	"Current.Asset.Turnover.Rate",
+    "qckAstTurnoverRate" =	"Quick.Asset.Turnover.Rate",
+    "wrkCapTurnoverRate" =	"Working.capitcal.Turnover.Rate",
+    "cashTurnoverRate" =	"Cash.Turnover.Rate",
+    "cashFlwToSales" =	"Cash.Flow.to.Sales",
+    "fixAstsToLiab" =	"Fixed.Assets.to.Assets",
+    "curLiabtToLiab" =	"Current.Liability.to.Liability",
+    "curLiabToEq" =	"Current.Liability.to.Equity",
+    "EqToltLiab" =	"Equity.to.Long.term.Liability",
+    "cashFlwtToTotAsts" =	"Cash.Flow.to.Total.Assets",
+    "cashFlwToLiab" =	"Cash.Flow.to.Liability",
+    "CFOtoAsts" =	"CFO.to.Assets",
+    "cashFlwToEq" =	"Cash.Flow.to.Equity",
+    "curLiabToCurAsts" =	"Current.Liability.to.Current.Assets",
+    "liabAstsFlag" =	"Liability.Assets.Flag",
+    "netIncToTotAsts" =	"Net.Income.to.Total.Assets",
+    "totAstsToGNPPrice" =	"Total.assets.to.GNP.price",
+    "noCredInt" =	"No.credit.Interval",
+    "grsPrftToSales" =	"Gross.Profit.to.Sales",
+    "netIncToStkhldrEq" =	"Net.Income.to.Stockholder.s.Equity",
+    "liabToEq" =	"Liability.to.Equity",
+    "DFL" =	"Degree.of.Financial.Leverage..DFL.",
+    "intCovRatioIntExpToEBIT" =	"Interest.Coverage.Ratio..Interest.expense.to.EBIT.",
+    "netIncFlag" =	"Net.Income.Flag",
+    "eqToLiab" =	"Equity.to.Liability"
+  )
+```
+
+```{r}
+names(data1)
+```
+During initial evaluation of potential dataset to use for this project, I briefly tried to model the `{r} dataset` dataset using a logistic regression model and it did not converge.  We'll reproduce that here:
+```{r}
+#quick test fit using all variables with logistic regression model
+logitMod <- glm(bankrupt ~ ., data = data1, family=binomial())
+```
+This is the same warning I got in my original evaluation of the datasets, "algoritm did not converge".  This may be due to collinearity between the myriad variables.  I will check out the covariance matrix to see if we can identify some variables to remove.
+
+```{r}
+fullCorr <- cor(data1)
+fullCorr
+```
+```{r}
+abs(fullCorr)>0.7
+```
+
+
