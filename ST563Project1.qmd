@@ -327,9 +327,46 @@ knnConf
 ```
 The accuracy of the tuned model is significantly different than the NIR at the alpha=0.05 confidence level.
 
-## Regularized Logistic Regression Model
+## Regularized Logistic Regression Model (Elastic Net)
+The next model we will evaluate will be the Elastic Net model, using a logic link function, since the dependent variable is a binary classifier and takes on the values `0` or `1`.  The elastic net combines both the L1 and L2 penalties.  The L1 penalty is the absolute value of the sum of the coefficient estimates, and the L2 penalty is the sum of the squared coefficient estimates.  This is a parametric model that estimates the parameters that minimizes the logistic regression model subject to both the L1 and L2 penatly.  There are also two tuning parameters, alpha and lambda.  This is a combination of both LASSO and Ridge regression and deals with highly correlated data better than either alone.  This is why I picked Elastic Net here, since we have shown above that there is significant correlation between predictors in the `{r} dataset` dataset.
 
+This model performs variable selection and can be used for inference, as there are estimated coefficients for which confidence intervals can be calculated.  We will need to standardize the predictors for this model
 
+We'll start by building a tuning grid for both all combinations of Alpha and Lambda that we want to evaluate:
+```{r}
+#create tuning grid for Elastic Net
+alpha <- seq(from = 0, to = 1, by = 0.05)
+lambda <- seq(from = 0.005, to = 0.1, by = 0.005)
+netTuneGrid <- expand.grid(alpha, lambda)
+names(netTuneGrid) <- c("alpha", "lambda")
+head(netTuneGrid)
+```
+
+Next, we'll perform 10-fold cross validation on the training data using the caret workflow and glmnet() model family.
+```{r}
+netMod <- train(bankrupt ~ ., data = bankrupt_train,
+                 method = "glmnet",
+                 family = "binomial",
+                 preProcess = c("center", "scale"),
+                 tuneGrid = netTuneGrid,
+                 trControl = trainControl(method = "cv", 
+                                          number = 10))
+plot(netMod)
+```
+
+```{r}
+netMod$bestTune
+```
+```{r}
+#use predict() to evaluate model on training dataset
+netTrain <- predict(netMod, newdata = bankrupt_train)
+postResample(netTrain, obs = bankrupt_train$bankrupt)
+netConf <-confusionMatrix(netTrain, bankrupt_train$bankrupt)
+netConf
+```
+The best Elastic Net model on the training data based on accuracy is the model with alpha = `{r} netMod$bestTune[1]` and lambda = `{r} netMod$bestTune[2].  The accuracy of this model is not significantly higher than the NIR.  This model also takes quite a bit of time to train, ~10 minutes.
+
+##
 
 
 
