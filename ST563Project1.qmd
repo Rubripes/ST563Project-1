@@ -11,6 +11,7 @@ Let's load necessary libraries before we begin:
 library(tidyverse)
 library(caret)
 library(rstatix)
+#library(mgcv)
 ```
 
 ```{r}
@@ -71,7 +72,8 @@ d <- as.data.frame(names(data))
 write_csv(d, "names.csv")
 ```
 
-Since the output is difficult to read, I moved the variables to a csv file and opened in excel to look through the named variables and decide on what to call them.  I've mapped these new names to the existing variables below using the Tidyverse.  I've also coerced the integer variables to factors.
+Since the output is difficult to read, I moved the variables to a csv file and opened in excel to look through the named variables and decide on what to call them. I've mapped these new names to the existing variables below using the Tidyverse. I've also coerced the integer variables to factors.
+
 ```{r}
 #use rename() to rename variables
 #create list of variables to coerce to fctr
@@ -270,9 +272,10 @@ head(bankrupt_train)
 
 Let's try KNN first to see if that model will work with this many variables. The k-Nearest Neighbors (kNN) model is a non-parametric model that uses the tuning parameter k to evaluate each k-nearest values. In the case of classification tasks (which is what we are doing here), for each value of k, the majority of the k-nearest values determines the class. For example, with k=1, each observation determines the class of itself. If k=3, then if 2 of the observations are class=0 and 1 observation is class=1, then the majority rule is that that combination of predictors will be classified as class=0. This model by itself does not perform variable selection, but we have included Principle Components Analysis (PCA) as a preprocessing step in the model training below, which does perform variable selection. This is necessary due to the highly correlated nature of this dataset.
 
-For the purposes of using PCA, we will center and scale the data.  This is not strictly necessary if we are using kNN modeling without PCA.
+For the purposes of using PCA, we will center and scale the data. This is not strictly necessary if we are using kNN modeling without PCA.
 
 We will tune the optimal value of the tuning parameter (k) based on the training accuracy.
+
 ```{r}
 #set seed for cv fold generation
 set.seed(10)
@@ -291,7 +294,7 @@ knnMod$bestTune
 
 ```
 
-This looks like the best training accuracy is for k=`{r} knnMod$bestTune`.  
+This looks like the best training accuracy is for k=`{r} knnMod$bestTune`.
 
 Let's show this visually:
 
@@ -302,6 +305,7 @@ plot(knnMod)
 We'll also calculate the NIR (no information rate), which is just the proportion of the observations that fall in the most prevalent category. The model above should perform better than the NIR, or it is of no value.
 
 ```{r}
+#create table of class proportions in training dataset for calculation of NIR.
 trainClassProp <- table(bankrupt_train$bankrupt)
 trainClassProp
 dim(trainClassProp)
@@ -315,9 +319,10 @@ NIRknnTrain <- (trainClassProp[1]/nrow(bankrupt_train))
 NIRknnTrain
 ```
 
-The NIR for the kNN model is `{r} NIRknnTrain`.  The accuracy of the best tuned kNN model is `{r} knnMod$results[10,2]`.  This is not a large improvement in training accuracy.  We'll see later if the test accuracy changes.
+The NIR for the kNN model is `{r} NIRknnTrain`. The accuracy of the best tuned kNN model is `{r} knnMod$results[10,2]`. This is not a large improvement in training accuracy. We'll see later if the test accuracy changes.
 
 We'll predict with the best kNN model on the entire training dataset.
+
 ```{r}
 #use predict() to evaluate model on training dataset
 knnTrain <- predict(knnMod, newdata = bankrupt_train)
@@ -325,14 +330,17 @@ postResample(knnTrain, obs = bankrupt_train$bankrupt)
 knnConf <-confusionMatrix(knnTrain, bankrupt_train$bankrupt)
 knnConf
 ```
+
 The accuracy of the tuned model is significantly different than the NIR at the alpha=0.05 confidence level.
 
 ## Regularized Logistic Regression Model (Elastic Net)
-The next model we will evaluate will be the Elastic Net model, using a logic link function, since the dependent variable is a binary classifier and takes on the values `0` or `1`.  The elastic net combines both the L1 and L2 penalties.  The L1 penalty is the absolute value of the sum of the coefficient estimates, and the L2 penalty is the sum of the squared coefficient estimates.  This is a parametric model that estimates the parameters that minimizes the logistic regression model subject to both the L1 and L2 penatly.  There are also two tuning parameters, alpha and lambda.  This is a combination of both LASSO and Ridge regression and deals with highly correlated data better than either alone.  This is why I picked Elastic Net here, since we have shown above that there is significant correlation between predictors in the `{r} dataset` dataset.
 
-This model performs variable selection and can be used for inference, as there are estimated coefficients for which confidence intervals can be calculated.  We will need to standardize the predictors for this model
+The next model we will evaluate will be the Elastic Net model, using a logic link function, since the dependent variable is a binary classifier and takes on the values `0` or `1`. The elastic net combines both the L1 and L2 penalties. The L1 penalty is the absolute value of the sum of the coefficient estimates, and the L2 penalty is the sum of the squared coefficient estimates. This is a parametric model that estimates the parameters that minimizes the logistic regression model subject to both the L1 and L2 penatly. There are also two tuning parameters, alpha and lambda. This is a combination of both LASSO and Ridge regression and deals with highly correlated data better than either alone. This is why I picked Elastic Net here, since we have shown above that there is significant correlation between predictors in the `{r} dataset` dataset.
+
+This model performs variable selection and can be used for inference, as there are estimated coefficients for which confidence intervals can be calculated. We will need to standardize the predictors for this model
 
 We'll start by building a tuning grid for both all combinations of Alpha and Lambda that we want to evaluate:
+
 ```{r}
 #create tuning grid for Elastic Net
 alpha <- seq(from = 0, to = 1, by = 0.05)
@@ -343,7 +351,9 @@ head(netTuneGrid)
 ```
 
 Next, we'll perform 10-fold cross validation on the training data using the caret workflow and glmnet() model family.
+
 ```{r}
+#train elastic net model
 netMod <- train(bankrupt ~ ., data = bankrupt_train,
                  method = "glmnet",
                  family = "binomial",
@@ -355,8 +365,10 @@ plot(netMod)
 ```
 
 ```{r}
+#show the best tuning parameters
 netMod$bestTune
 ```
+
 ```{r}
 #use predict() to evaluate model on training dataset
 netTrain <- predict(netMod, newdata = bankrupt_train)
@@ -364,9 +376,58 @@ postResample(netTrain, obs = bankrupt_train$bankrupt)
 netConf <-confusionMatrix(netTrain, bankrupt_train$bankrupt)
 netConf
 ```
-The best Elastic Net model on the training data based on accuracy is the model with alpha = `{r} netMod$bestTune[1]` and lambda = `{r} netMod$bestTune[2].  The accuracy of this model is not significantly higher than the NIR.  This model also takes quite a bit of time to train, ~10 minutes.
 
-##
+The best Elastic Net model on the training data based on accuracy is the model with alpha = `{r} netMod$bestTune[1]` and lambda = \`{r} netMod\$bestTune\[2\]. The accuracy of this model is not significantly higher than the NIR. This model also takes quite a bit of time to train, \~10 minutes.
+
+## General Additive Model Family
+
+The general additive model is a parametric model that is the linear combination of basis funtions. Below, we will smoothing splines. The smooting splines subject the model loss function minimization to a regularization penalty, lambda. Lambda and degrees of freedom are the tuing parameters for smoothing spline models. Because the model is parametric, it can be used to perform inference on the predictors. The model performs shrinkage of the predictors, but not not select variables. Because of collinearity concerns, however, I did decide to use Principal Components Analysis prior to training the model. The PCA performs variable selection.
+
+I believe collinearity is causing a problem with the original training dataset. I was unable to fit the general additive model with all variables, even using the smoothing splines as a regularization technique. Let's check the correlation in the training dataset.
+
+```{r}
+#create data frame of numeric values without the factors for evaluation of correlation
+numDataTrain <- bankrupt_train |>
+  select(where(is.numeric))
+fullCorrTrain <- (cor(numDataTrain))
+longCorrTrain <- cor_gather(fullCorrTrain)
+#sort and filter correlation 
+longCorrTrain <- longCorrTrain |>
+  arrange(desc(cor)) |>
+  filter(cor < 1 & cor > 0.7)
+  
+longCorrTrain
+```
+
+Some of the variables have correlation of 1.0. We need to deal with these, since I cannot train the model using all of the predictors in the training dataset *(errors not shown)*.  We'll use PCA in the pre-processing, which also necessitates centering and scaling the data.
+
+```{r}
+#train smooting splines (gamSpline() family) using 10 fold cv.
+gamMod <- train(bankrupt ~ ., data = bankrupt_train,
+                 method = "gamSpline",
+                 family = "binomial",
+                 preProcess = c("center", "scale","pca"),
+                 trControl = trainControl(method = "cv", 
+                                          number = 10),
+                 tuneGrid = data.frame(df = c(2,3,4,5,6,7))
+)
+plot(gamMod)
+```
 
 
+```{r}
+gamMod$bestTune
+
+```
+
+
+```{r}
+gamTrain <- predict(gamMod, newdata = bankrupt_train)
+postResample(gamTrain, obs = bankrupt_train$bankrupt)
+gamConf <-confusionMatrix(gamTrain, bankrupt_train$bankrupt)
+gamConf
+```
+```{r}
+summary(gamMod)
+```
 
