@@ -11,7 +11,7 @@ Let's load necessary libraries before we begin:
 library(tidyverse)
 library(caret)
 library(rstatix)
-#library(mgcv)
+library(randomForest)
 ```
 
 ```{r}
@@ -430,7 +430,75 @@ gamConf
 The training accuracy of this model is significantly different than the NIR.  The model that has the highest training accuracy has `{r} gamMod$bestTune` degrees of freedom and kappa = `{r} gamConf$overall[2]`.
 
 ## Single Classification Tree Model
-The classification tree is a model that splits the data using recursive binary splitting.  This technique evaluates every possible split in the data, and selects the split point where the RSS is minimized.  This is repeated down each branch of the tree until a certain stopping point is reached or the tree can be pruned.  Leaving a fully grown tree will result in overfitting the data.
+The classification tree is a model that splits the data using recursive binary splitting.  This technique evaluates every possible split in the data, and selects the split point where the RSS is minimized.  This is repeated down each branch of the tree until a certain stopping point is reached or each branch reaches a terminal node.  Leaving a fully grown tree will result in overfitting the data.
 
-The classification tree is a non-parametric model and therefore cannot be used to perform inference.  There is one tuning parameter, alpha, which is the complexity parameter.  This complexity paramater may be used to *prune* the tree to find the "best" model. 
+The classification tree does not perform variable selection and cannot be used to perform inference, although variable importance is supplied and has a roughly similar interpretation in that variables are ranked in their relative contribution to the models predictive ability.
+
+The classification tree is a non-parametric model and therefore cannot be used to perform inference.  There is one tuning parameter, alpha, which is the complexity parameter.  This complexity paramater may be used to *prune* the tree to find the "best" model. We do not have to pre-process the predictors for this model.
+
+```{r}
+#train smooting splines (gamSpline() family) using 10 fold cv.
+set.seed(10)
+treeMod <- train(bankrupt ~ ., data = bankrupt_train,
+                 method = "rpart",
+                 trControl = trainControl(method = "cv", 
+                                          number = 10))
+
+plot(treeMod)
+```
+
+
+```{r}
+treeMod$bestTune
+```
+```{r}
+treeTrain <- predict(treeMod, newdata = bankrupt_train)
+postResample(treeTrain, obs = bankrupt_train$bankrupt)
+treeConf <-confusionMatrix(treeTrain, bankrupt_train$bankrupt)
+treeConf
+```
+```{r}
+#plot variable importance
+plot(varImp(treeMod))
+```
+Visualizing 93 predictors is challenging to impossible in this graph.  In fact, the importance is diplayed as 0 below an importance of 6.97:
+```{r}
+#display importance numbers in a dataframe.
+varImp(treeMod)
+```
+
+I'll remove the importance variables that are 0 for more interpretability.
+```{r}
+#plot most important variables for visualization
+a <- varImp(treeMod)
+a[[1]] <- a[[1]] |>
+  filter(Overall > 5)
+plot(a)
+```
+The tree classification model predicts more accurately that the NIR at the alpha=0.05 confidence level.  It also trains relatively quickly compared to the GAM/Smoothing Spline model.
+
+## Ensemble Tree Method
+The ensemble tree models combine different techniques to arrive at more stable predictions on unseen data by using bootstrapping to randomly sample from the dataset, applying the model, then combining the models into an aggregate model.  We'll use the **Random Forest** model here to help account for any possibility that a strong predictor will commonly be the first split.  The Random Forest model will randomly select a number of pre-defined predictors (p) for evaluating each split.  When p=P, where P is the number of predictors in the full model, this will be the Bagged Tree model.  This strategy will allow us to evaluate "two" models at once.
+
+The ensemble tree models are extensions of the classification tree model used above.  This model is non-parametric.  The tuning parameters are the cost-complexity and the number of predictors to randomly select at east split (`mtry`).  This model, like the classification tree, cannot be used for inference, but there is still the imporatance that can be interpreted in a similar fashion.  The importance provides information as to which variables are most important for prediction.
+
+```{r}
+set.seed(10)
+forestGrid <- expand.grid(mtry=c(1:(ncol(bankrupt_train)-1)))
+rfTrain <- train(bankrupt ~ ., data = bankrupt_train,
+                 method = "rf",
+                 metric = "Accuracy",
+                 tuneGrid = forestGrid, 
+                 trControl = trainControl(method = "oob", 
+                                          number = 1000))
+
+
+plot(rfTrain)
+```
+
+```{r}
+ftTuneGrid
+```
+
+
 
