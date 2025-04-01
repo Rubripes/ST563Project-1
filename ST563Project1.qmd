@@ -270,7 +270,7 @@ head(bankrupt_train)
 
 ### k-Nearest Neighbors
 
-Let's try KNN first to see if that model will work with this many variables. The k-Nearest Neighbors (kNN) model is a non-parametric model that uses the tuning parameter k to evaluate each k-nearest values. In the case of classification tasks (which is what we are doing here), for each value of k, the majority of the k-nearest values determines the class. For example, with k=1, each observation determines the class of itself. If k=3, then if 2 of the observations are class=0 and 1 observation is class=1, then the majority rule is that that combination of predictors will be classified as class=0. This model by itself does not perform variable selection, but we have included Principle Components Analysis (PCA) as a preprocessing step in the model training below, which does perform variable selection. This is necessary due to the highly correlated nature of this dataset.
+Let's try KNN first to see if that model will work with this many variables. The k-Nearest Neighbors (kNN) model is a non-parametric model that uses the tuning parameter k to evaluate each k-nearest values. In the case of classification tasks (which is what we are doing here), for each value of k, the majority of the k-nearest values determines the class. For example, with k=1, each observation determines the class of itself. If k=3, then if 2 of the observations are class=0 and 1 observation is class=1, then the majority rule is that that combination of predictors will be classified as class=0. This model does not perform variable selection, and we have included Principle Components Analysis (PCA) as a preprocessing step in the model training below, which does perform variable shrinkage. This is necessary due to the highly correlated nature of this dataset.
 
 For the purposes of using PCA, we will center and scale the data. This is not strictly necessary if we are using kNN modeling without PCA.
 
@@ -381,7 +381,7 @@ The best Elastic Net model on the training data based on accuracy is the model w
 
 ## General Additive Model Family
 
-The general additive model is a parametric model that is the linear combination of basis funtions. Below, we will smoothing splines. The smooting splines subject the model loss function minimization to a regularization penalty, lambda. Lambda and degrees of freedom are the tuing parameters for smoothing spline models. Because the model is parametric, it can be used to perform inference on the predictors. The model performs shrinkage of the predictors, but not not select variables. Because of collinearity concerns, however, I did decide to use Principal Components Analysis prior to training the model. The PCA performs variable selection.
+The general additive model can be either a parametric or non-parametric model that is the linear combination of basis funtions. Below, we will smoothing splines. The smooting splines subject the model loss function minimization to a regularization penalty, lambda. Lambda and degrees of freedom are the tuning parameters for smoothing spline models. The smooting spline model is non-parametric, and cannot be used to perform inference on the predictors. The model performs shrinkage of the predictors, but not not select variables. Because of collinearity concerns, however, I did decide to use Principal Components Analysis prior to training the model.
 
 I believe collinearity is causing a problem with the original training dataset. I was unable to fit the general additive model with all variables, even using the smoothing splines as a regularization technique. Let's check the correlation in the training dataset.
 
@@ -427,7 +427,10 @@ postResample(gamTrain, obs = bankrupt_train$bankrupt)
 gamConf <-confusionMatrix(gamTrain, bankrupt_train$bankrupt)
 gamConf
 ```
-```{r}
-summary(gamMod)
-```
+The training accuracy of this model is significantly different than the NIR.  The model that has the highest training accuracy has `{r} gamMod$bestTune` degrees of freedom and kappa = `{r} gamConf$overall[2]`.
+
+## Single Classification Tree Model
+The classification tree is a model that splits the data using recursive binary splitting.  This technique evaluates every possible split in the data, and selects the split point where the RSS is minimized.  This is repeated down each branch of the tree until a certain stopping point is reached or the tree can be pruned.  Leaving a fully grown tree will result in overfitting the data.
+
+The classification tree is a non-parametric model and therefore cannot be used to perform inference.  There is one tuning parameter, alpha, which is the complexity parameter.  This complexity paramater may be used to *prune* the tree to find the "best" model. 
 
