@@ -402,8 +402,10 @@ longCorrTrain
 Some of the variables have correlation of 1.0. We need to deal with these, since I cannot train the model using all of the predictors in the training dataset *(errors not shown)*.  We'll use PCA in the pre-processing, which also necessitates centering and scaling the data.
 
 ```{r}
+#set seed for reproducibility
 set.seed(10)
-#train smooting splines (gamSpline() family) using 10 fold cv.
+#train smooting splines (gamSpline() family) using 10 fold cv.  
+#model takes ~40 minutes to train
 gamMod <- train(bankrupt ~ ., data = bankrupt_train,
                  method = "gamSpline",
                  family = "binomial",
@@ -418,7 +420,6 @@ plot(gamMod)
 
 ```{r}
 gamMod$bestTune
-
 ```
 
 
@@ -454,6 +455,7 @@ plot(treeMod)
 treeMod$bestTune
 ```
 ```{r}
+#predict on the training dataset and calculate accuracy, and plot confusion matrix
 treeTrain <- predict(treeMod, newdata = bankrupt_train)
 postResample(treeTrain, obs = bankrupt_train$bankrupt)
 treeConf <-confusionMatrix(treeTrain, bankrupt_train$bankrupt)
@@ -489,7 +491,8 @@ The ensemble tree models are extensions of the classification tree model used ab
 set.seed(10)
 #train rendom forest model with 1:nrow random predictors at each node
 forestGrid <- expand.grid(.mtry=c(1:(ncol(bankrupt_train)-1)))
-rfTrain <- train(bankrupt ~ ., data = bankrupt_train,
+#model takes ~30 minutes to train
+rfMod <- train(bankrupt ~ ., data = bankrupt_train,
                  method = "rf",
                  metric = "Accuracy",
                  tuneGrid = forestGrid, 
@@ -497,15 +500,105 @@ rfTrain <- train(bankrupt ~ ., data = bankrupt_train,
                                           number = 1000))
 
 #plot accuracy
-plot(rfTrain)
+plot(rfMod)
 ```
 
 ```{r}
-rfTrain$bestTune
+rfMod$bestTune
 ```
 ```{r}
+#predict on the training dataset and calculate accuracy, and plot confusion matrix
+rfTrain <- predict(rfMod, newdata = bankrupt_train)
+postResample(rfTrain, obs = bankrupt_train$bankrupt)
+rfConf <-confusionMatrix(rfTrain, bankrupt_train$bankrupt)
+rfConf
+```
+This is unexpected to me...accuracy of 1.  It will be intersting to see how this model works with the test dataset.  Let's see if importance makes any sense...
+```{r}
+plot(varImp(rfMod))
+```
+This is a nice smooth curve of the relative importance of the variables.  I'll filter for Importance <16 so that the most important variables are clear.
+```{r}
+#shorten the importance plot to include only the most important for the fr model
+rfImpShort <- varImp(rfMod)
+rfImpShort[[1]] <- rfImpShort[[1]] |>
+  filter(Overall > 16)
+plot(rfImpShort)
+```
+Some of the same features are present in the most important variable chart from Random Forest and from the Single Classification Tree.
 
+## Support Vector Machines
+Support verctor machines can be both parametric and non-parametric.  We will be using a kernal based method (radial basis) in which we will use cross-validation to tune the tuning parameter `c`, or cost and sigma.
+
+```{r}
+#C <- exp(seq(-5,-1,len=10))
+#sigma <- seq(from = 4, to = 7, by = 1)
+#svTuneGrid <- expand.grid(C, sigma)
+#names(svTuneGrid) <- c("C", "sigma")
+#svTuneGrid
 ```
 
 
+```{r}
+#set seed for reproducibility
+#set.seed(10)
+#create tuning grig
+#svmGrid <- expand.grid(C = exp(seq(-5,1,len=10)))
+#train model
+#svMod <- train(bankrupt ~ ., data = bankrupt_train,
+#                 method = "svmRadialSigma",
+#                 tuneGrid = svTuneGrid, 
+#                 trControl = trainControl(method = "cv", 
+                                          number = 10))
+
+plot(svMod)
+```
+
+```{r}
+#svMod$bestTune
+```
+It looks like the training accuracy of this model is no better than the NIR.  I've commented out the radial SVM model above because it takes a very long time to train and doesn't offer any additional insight for the tuning grid specified searching over sigma. 
+
+I've recoded the same model without searching through sigma in the tuning grid and get not better accuracy than the NIR.
+```{r}
+svTrain <- predict(svMod, newdata = bankrupt_train)
+postResample(svTrain, obs = bankrupt_train$bankrupt)
+svConf <-confusionMatrix(svTrain, bankrupt_train$bankrupt)
+svConf
+```
+
+```{r}
+C2 <- exp(seq(-5,-1,len=10))
+svTuneGrid2 <- expand.grid(C)
+names(svTuneGrid2) <- c("C")
+svTuneGrid2
+```
+
+
+```{r}
+#set seed for reproducibility
+set.seed(10)
+#create tuning grig
+#svmGrid <- expand.grid(C = exp(seq(-5,1,len=10)))
+#train model
+svMod2 <- train(bankrupt ~ ., data = bankrupt_train,
+                 method = "svmRadialCost",
+                 tuneGrid = svTuneGrid2, 
+                 trControl = trainControl(method = "cv", 
+                                          number = 10))
+
+plot(svMod2)
+```
+```{r}
+svMod2$bestTune
+```
+
+
+```{r}
+svTrain2 <- predict(svMod2, newdata = bankrupt_train)
+postResample(svTrain2, obs = bankrupt_train$bankrupt)
+svConf2 <-confusionMatrix(svTrain2, bankrupt_train$bankrupt)
+svConf2
+```
+The radial SVM seems to not perform very well based on training cross validation accuracy.  I decided to evaluate the radial SVM since it should fit non-linear data well.  There may be a different SVM model that fits better but this would take significant time and computing power to sort out.  
 
