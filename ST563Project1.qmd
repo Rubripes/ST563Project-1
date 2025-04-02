@@ -11,7 +11,6 @@ Let's load necessary libraries before we begin:
 library(tidyverse)
 library(caret)
 library(rstatix)
-library(randomForest)
 ```
 
 ```{r}
@@ -331,7 +330,7 @@ knnConf <-confusionMatrix(knnTrain, bankrupt_train$bankrupt)
 knnConf
 ```
 
-The accuracy of the tuned model is significantly different than the NIR at the alpha=0.05 confidence level.
+The accuracy of the tuned model is not significantly different than the NIR at the alpha=0.05 confidence level.
 
 ## Regularized Logistic Regression Model (Elastic Net)
 
@@ -353,6 +352,7 @@ head(netTuneGrid)
 Next, we'll perform 10-fold cross validation on the training data using the caret workflow and glmnet() model family.
 
 ```{r}
+set.seed(10)
 #train elastic net model
 netMod <- train(bankrupt ~ ., data = bankrupt_train,
                  method = "glmnet",
@@ -402,6 +402,7 @@ longCorrTrain
 Some of the variables have correlation of 1.0. We need to deal with these, since I cannot train the model using all of the predictors in the training dataset *(errors not shown)*.  We'll use PCA in the pre-processing, which also necessitates centering and scaling the data.
 
 ```{r}
+set.seed(10)
 #train smooting splines (gamSpline() family) using 10 fold cv.
 gamMod <- train(bankrupt ~ ., data = bankrupt_train,
                  method = "gamSpline",
@@ -439,6 +440,7 @@ The classification tree is a non-parametric model and therefore cannot be used t
 ```{r}
 #train smooting splines (gamSpline() family) using 10 fold cv.
 set.seed(10)
+#train tree model using 10 fold cv
 treeMod <- train(bankrupt ~ ., data = bankrupt_train,
                  method = "rpart",
                  trControl = trainControl(method = "cv", 
@@ -480,11 +482,13 @@ The tree classification model predicts more accurately that the NIR at the alpha
 ## Ensemble Tree Method
 The ensemble tree models combine different techniques to arrive at more stable predictions on unseen data by using bootstrapping to randomly sample from the dataset, applying the model, then combining the models into an aggregate model.  We'll use the **Random Forest** model here to help account for any possibility that a strong predictor will commonly be the first split.  The Random Forest model will randomly select a number of pre-defined predictors (p) for evaluating each split.  When p=P, where P is the number of predictors in the full model, this will be the Bagged Tree model.  This strategy will allow us to evaluate "two" models at once.
 
-The ensemble tree models are extensions of the classification tree model used above.  This model is non-parametric.  The tuning parameters are the cost-complexity and the number of predictors to randomly select at east split (`mtry`).  This model, like the classification tree, cannot be used for inference, but there is still the imporatance that can be interpreted in a similar fashion.  The importance provides information as to which variables are most important for prediction.
+The ensemble tree models are extensions of the classification tree model used above.  This model is non-parametric.  The tuning parameter in the model below is the number of predictors to randomly select at east split (`mtry`).  This model, like the classification tree, cannot be used for inference, but there is still the importance that can be interpreted in a similar fashion.  The importance provides information as to which variables are most important for prediction, but does not perform variable selection.  The data can be used as-is and do not need to be standardized.
 
 ```{r}
+#set seed for reproducibility
 set.seed(10)
-forestGrid <- expand.grid(mtry=c(1:(ncol(bankrupt_train)-1)))
+#train rendom forest model with 1:nrow random predictors at each node
+forestGrid <- expand.grid(.mtry=c(1:(ncol(bankrupt_train)-1)))
 rfTrain <- train(bankrupt ~ ., data = bankrupt_train,
                  method = "rf",
                  metric = "Accuracy",
@@ -492,12 +496,15 @@ rfTrain <- train(bankrupt ~ ., data = bankrupt_train,
                  trControl = trainControl(method = "oob", 
                                           number = 1000))
 
-
+#plot accuracy
 plot(rfTrain)
 ```
 
 ```{r}
-ftTuneGrid
+rfTrain$bestTune
+```
+```{r}
+
 ```
 
 
