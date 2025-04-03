@@ -1,0 +1,2458 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Matt Bray">
+
+<title>ST563Project1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">ST563Project1</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Matt Bray </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Let’s load necessary libraries before we begin:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyverse' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'ggplot2' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tibble' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tidyr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'readr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'purrr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'dplyr' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'stringr' was built under R version 4.2.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'forcats' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'lubridate' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lattice
+
+Attaching package: 'caret'
+
+The following object is masked from 'package:purrr':
+
+    lift</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstatix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'rstatix' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rstatix'
+
+The following object is masked from 'package:stats':
+
+    filter</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'kableExtra' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'kableExtra'
+
+The following object is masked from 'package:dplyr':
+
+    group_rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(randomForest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>randomForest 4.7-1.2
+Type rfNews() to see new features/changes/bug fixes.
+
+Attaching package: 'randomForest'
+
+The following object is masked from 'package:dplyr':
+
+    combine
+
+The following object is masked from 'package:ggplot2':
+
+    margin</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>warnings<span class="ot">=</span><span class="cn">FALSE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#shorten name of the dataset for ease of use throughout text</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> <span class="st">"Taiwanese Bankruptcy Prediction"</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">#read in dataset</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"./bankruptcy.csv"</span>)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co">#create varirable describing length of dataset (nrow()).</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>l <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="co">#define number of response variables</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co">#create variable to describe number of feature variables</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>w <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">names</span>(data))<span class="sc">-</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="modeling-of-the-taiwanese-bankruptcy-prediction-dataset" class="level1">
+<h1>Modeling of the “Taiwanese Bankruptcy Prediction” dataset</h1>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="evaluating-multiple-models-to-determine-the-importance-of-the-features-to-their-ability-to-predict-bankruptcy." class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-multiple-models-to-determine-the-importance-of-the-features-to-their-ability-to-predict-bankruptcy.">Evaluating multiple models to determine the importance of the features to their ability to predict bankruptcy.</h3>
+<p>The Taiwanese Bankruptcy Prediction dataset was downloaded from the <a href="https://archive.ics.uci.edu/dataset/572/taiwanese+bankruptcy+prediction">UCI Machine Learning Repository</a>. There are 6819 observations and 95 feature variables. There is 1 binary response variable(s), <code>"Bankrupt."</code>. The response variable takes on the values of <code>0</code> or <code>1</code> and respectively correspond to not going bankrupt and going bankrupt. The feature variables consist of many common business metrics.</p>
+<p>Due to the number of variables, we’ll rename them for ease of use in this program. We will also evaluate for collinearity since many of the variables appear to be related based on my basic understanding of the terminology. I will choose a subset of the feature variables to evaluate for this project.</p>
+<p>The goal of this project is to see if we can predict whether or not a company will go bankrupt or not based on the data contained in this dataset. In order to reach this goal, we will evaluate and tune multiple model families to see which model can predict the best, then at the end we will model the entire dataset. Our ability to model and predict bankruptcy is important to investors to be able to understand how their investments may perform based on common business metrics. An investor may be able to recoup some of their investment from a poorly performing investment, but bankruptcy may shield the investment from the ability of the investor to recoup any capitol and result in a large and maximal loss for the investor <a href="https://www.uscourts.gov/court-programs/bankruptcy">1</a>.</p>
+<p>Being able to understand how the different metrics related to bankruptcy status can also help investors, boards, and management make changes to the specific metric that could prevent bankruptcy in the future.</p>
+<p>One caveat to point out is that the Taiwanese GAAP <a href="https://www.china-briefing.com/news/china-gaap-vs-u-s-gaap-and-ifrs/">2</a> (generally accepted accounting principles) may be different than those in the US and understanding these differences are beyond the scope of this project. This means the model determined as “best” from this Taiwanese Bankruptcy Prediction dataset may not predict in a similar fashion with data obtained in the United States. Further analyses on US based companies would likely be necessary to provide better prediction in the United States.</p>
+</section>
+<section id="data-cleaning-and-organization" class="level3">
+<h3 class="anchored" data-anchor-id="data-cleaning-and-organization">Data Cleaning and Organization</h3>
+<p>Before analyzing the data in the models, we need to make some transformations to make the variables easier to manage and we need to reduce the number of variables in total.</p>
+<p>First, let’s see what the data structure is:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check data structure</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   6819 obs. of  96 variables:
+ $ Bankrupt.                                              : int  1 1 1 1 1 1 0 0 0 0 ...
+ $ ROA.C..before.interest.and.depreciation.before.interest: num  0.371 0.464 0.426 0.4 0.465 ...
+ $ ROA.A..before.interest.and...after.tax                 : num  0.424 0.538 0.499 0.451 0.538 ...
+ $ ROA.B..before.interest.and.depreciation.after.tax      : num  0.406 0.517 0.472 0.458 0.522 ...
+ $ Operating.Gross.Margin                                 : num  0.601 0.61 0.601 0.584 0.599 ...
+ $ Realized.Sales.Gross.Margin                            : num  0.601 0.61 0.601 0.584 0.599 ...
+ $ Operating.Profit.Rate                                  : num  0.999 0.999 0.999 0.999 0.999 ...
+ $ Pre.tax.net.Interest.Rate                              : num  0.797 0.797 0.796 0.797 0.797 ...
+ $ After.tax.net.Interest.Rate                            : num  0.809 0.809 0.808 0.809 0.809 ...
+ $ Non.industry.income.and.expenditure.revenue            : num  0.303 0.304 0.302 0.303 0.303 ...
+ $ Continuous.interest.rate..after.tax.                   : num  0.781 0.782 0.78 0.781 0.782 ...
+ $ Operating.Expense.Rate                                 : num  1.26e-04 2.90e-04 2.36e-04 1.08e-04 7.89e+09 ...
+ $ Research.and.development.expense.rate                  : num  0.00 0.00 2.55e+07 0.00 0.00 0.00 7.30e+08 5.09e+07 0.00 0.00 ...
+ $ Cash.flow.rate                                         : num  0.458 0.462 0.459 0.466 0.463 ...
+ $ Interest.bearing.debt.interest.rate                    : num  0.000725 0.000647 0.00079 0.000449 0.000686 ...
+ $ Tax.rate..A.                                           : num  0 0 0 0 0 ...
+ $ Net.Value.Per.Share..B.                                : num  0.148 0.182 0.178 0.154 0.168 ...
+ $ Net.Value.Per.Share..A.                                : num  0.148 0.182 0.178 0.154 0.168 ...
+ $ Net.Value.Per.Share..C.                                : num  0.148 0.182 0.194 0.154 0.168 ...
+ $ Persistent.EPS.in.the.Last.Four.Seasons                : num  0.169 0.209 0.181 0.194 0.213 ...
+ $ Cash.Flow.Per.Share                                    : num  0.312 0.318 0.307 0.322 0.319 ...
+ $ Revenue.Per.Share..Yuan...                             : num  0.01756 0.02114 0.00594 0.01437 0.02969 ...
+ $ Operating.Profit.Per.Share..Yuan...                    : num  0.0959 0.0937 0.0923 0.0778 0.0969 ...
+ $ Per.Share.Net.profit.before.tax..Yuan...               : num  0.139 0.17 0.143 0.149 0.168 ...
+ $ Realized.Sales.Gross.Profit.Growth.Rate                : num  0.0221 0.0221 0.0228 0.022 0.0221 ...
+ $ Operating.Profit.Growth.Rate                           : num  0.848 0.848 0.848 0.848 0.848 ...
+ $ After.tax.Net.Profit.Growth.Rate                       : num  0.689 0.69 0.689 0.689 0.69 ...
+ $ Regular.Net.Profit.Growth.Rate                         : num  0.689 0.69 0.689 0.689 0.69 ...
+ $ Continuous.Net.Profit.Growth.Rate                      : num  0.218 0.218 0.218 0.218 0.218 ...
+ $ Total.Asset.Growth.Rate                                : num  4.98e+09 6.11e+09 7.28e+09 4.88e+09 5.51e+09 6.08e+08 5.72e+09 6.63e+09 6.89e+09 5.55e+09 ...
+ $ Net.Value.Growth.Rate                                  : num  0.000327 0.000443 0.000396 0.000382 0.000439 ...
+ $ Total.Asset.Return.Growth.Rate.Ratio                   : num  0.263 0.265 0.264 0.263 0.265 ...
+ $ Cash.Reinvestment..                                    : num  0.364 0.377 0.369 0.384 0.38 ...
+ $ Current.Ratio                                          : num  0.00226 0.00602 0.01154 0.00419 0.00602 ...
+ $ Quick.Ratio                                            : num  0.00121 0.00404 0.00535 0.0029 0.00373 ...
+ $ Interest.Expense.Ratio                                 : num  0.63 0.635 0.63 0.63 0.636 ...
+ $ Total.debt.Total.net.worth                             : num  0.02127 0.0125 0.02125 0.00957 0.00515 ...
+ $ Debt.ratio..                                           : num  0.208 0.171 0.208 0.151 0.107 ...
+ $ Net.worth.Assets                                       : num  0.792 0.829 0.792 0.849 0.893 ...
+ $ Long.term.fund.suitability.ratio..A.                   : num  0.00502 0.00506 0.0051 0.00505 0.0053 ...
+ $ Borrowing.dependency                                   : num  0.39 0.377 0.379 0.38 0.375 ...
+ $ Contingent.liabilities.Net.worth                       : num  0.00648 0.00584 0.00656 0.00537 0.00662 ...
+ $ Operating.profit.Paid.in.capital                       : num  0.0959 0.0937 0.0923 0.0777 0.0969 ...
+ $ Net.profit.before.tax.Paid.in.capital                  : num  0.138 0.169 0.148 0.148 0.167 ...
+ $ Inventory.and.accounts.receivable.Net.value            : num  0.398 0.398 0.407 0.398 0.4 ...
+ $ Total.Asset.Turnover                                   : num  0.087 0.0645 0.015 0.09 0.1754 ...
+ $ Accounts.Receivable.Turnover                           : num  0.00181 0.00129 0.0015 0.00197 0.00145 ...
+ $ Average.Collection.Days                                : num  0.00349 0.00492 0.00423 0.00321 0.00437 ...
+ $ Inventory.Turnover.Rate..times.                        : num  1.82e-04 9.36e+09 6.50e+07 7.13e+09 1.63e-04 ...
+ $ Fixed.Assets.Turnover.Frequency                        : num  1.17e-04 7.19e+08 2.65e+09 9.15e+09 2.94e-04 ...
+ $ Net.Worth.Turnover.Rate..times.                        : num  0.0329 0.0255 0.0134 0.0281 0.0402 ...
+ $ Revenue.per.person                                     : num  0.03416 0.00689 0.029 0.01546 0.05811 ...
+ $ Operating.profit.per.person                            : num  0.393 0.392 0.382 0.378 0.394 ...
+ $ Allocation.rate.per.person                             : num  0.0371 0.0123 0.141 0.0213 0.024 ...
+ $ Working.Capital.to.Total.Assets                        : num  0.673 0.751 0.83 0.726 0.752 ...
+ $ Quick.Assets.Total.Assets                              : num  0.167 0.127 0.34 0.162 0.26 ...
+ $ Current.Assets.Total.Assets                            : num  0.191 0.182 0.603 0.226 0.358 ...
+ $ Cash.Total.Assets                                      : num  0.004094 0.014948 0.000991 0.018851 0.014161 ...
+ $ Quick.Assets.Current.Liability                         : num  0.002 0.00414 0.0063 0.00296 0.00427 ...
+ $ Cash.Current.Liability                                 : num  1.47e-04 1.38e-03 5.34e+09 1.01e-03 6.80e-04 ...
+ $ Current.Liability.to.Assets                            : num  0.1473 0.057 0.0982 0.0987 0.1102 ...
+ $ Operating.Funds.to.Liability                           : num  0.334 0.341 0.337 0.349 0.345 ...
+ $ Inventory.Working.Capital                              : num  0.277 0.29 0.277 0.277 0.288 ...
+ $ Inventory.Current.Liability                            : num  0.00104 0.00521 0.01388 0.00354 0.00487 ...
+ $ Current.Liabilities.Liability                          : num  0.676 0.309 0.446 0.616 0.975 ...
+ $ Working.Capital.Equity                                 : num  0.721 0.732 0.743 0.73 0.732 ...
+ $ Current.Liabilities.Equity                             : num  0.339 0.33 0.335 0.332 0.331 ...
+ $ Long.term.Liability.to.Current.Assets                  : num  0.02559 0.02395 0.00372 0.02217 0 ...
+ $ Retained.Earnings.to.Total.Assets                      : num  0.903 0.931 0.91 0.907 0.914 ...
+ $ Total.income.Total.expense                             : num  0.00202 0.00223 0.00206 0.00183 0.00222 ...
+ $ Total.expense.Assets                                   : num  0.0649 0.0255 0.0214 0.0242 0.0264 ...
+ $ Current.Asset.Turnover.Rate                            : num  7.01e+08 1.07e-04 1.79e-03 8.14e+09 6.68e+09 ...
+ $ Quick.Asset.Turnover.Rate                              : num  6.55e+09 7.70e+09 1.02e-03 6.05e+09 5.05e+09 ...
+ $ Working.capitcal.Turnover.Rate                         : num  0.594 0.594 0.595 0.594 0.594 ...
+ $ Cash.Turnover.Rate                                     : num  4.58e+08 2.49e+09 7.61e+08 2.03e+09 8.24e+08 ...
+ $ Cash.Flow.to.Sales                                     : num  0.672 0.672 0.672 0.672 0.672 ...
+ $ Fixed.Assets.to.Assets                                 : num  0.424 0.469 0.276 0.559 0.31 ...
+ $ Current.Liability.to.Liability                         : num  0.676 0.309 0.446 0.616 0.975 ...
+ $ Current.Liability.to.Equity                            : num  0.339 0.33 0.335 0.332 0.331 ...
+ $ Equity.to.Long.term.Liability                          : num  0.127 0.121 0.118 0.121 0.111 ...
+ $ Cash.Flow.to.Total.Assets                              : num  0.638 0.641 0.643 0.579 0.622 ...
+ $ Cash.Flow.to.Liability                                 : num  0.459 0.459 0.459 0.449 0.454 ...
+ $ CFO.to.Assets                                          : num  0.52 0.567 0.538 0.604 0.578 ...
+ $ Cash.Flow.to.Equity                                    : num  0.313 0.314 0.315 0.302 0.312 ...
+ $ Current.Liability.to.Current.Assets                    : num  0.1183 0.0478 0.0253 0.0672 0.0477 ...
+ $ Liability.Assets.Flag                                  : int  0 0 0 0 0 0 0 0 0 0 ...
+ $ Net.Income.to.Total.Assets                             : num  0.717 0.795 0.775 0.74 0.795 ...
+ $ Total.assets.to.GNP.price                              : num  0.00922 0.00832 0.04 0.00325 0.00388 ...
+ $ No.credit.Interval                                     : num  0.623 0.624 0.624 0.623 0.624 ...
+ $ Gross.Profit.to.Sales                                  : num  0.601 0.61 0.601 0.584 0.599 ...
+ $ Net.Income.to.Stockholder.s.Equity                     : num  0.828 0.84 0.837 0.835 0.84 ...
+ $ Liability.to.Equity                                    : num  0.29 0.284 0.29 0.282 0.279 ...
+ $ Degree.of.Financial.Leverage..DFL.                     : num  0.0266 0.2646 0.0266 0.0267 0.0248 ...
+ $ Interest.Coverage.Ratio..Interest.expense.to.EBIT.     : num  0.564 0.57 0.564 0.565 0.576 ...
+ $ Net.Income.Flag                                        : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ Equity.to.Liability                                    : num  0.0165 0.0208 0.0165 0.024 0.0355 ...</code></pre>
+</div>
+</div>
+<p>There are three integer variables (1 is the response, 2 are flag values). The rest of the varaiables are numeric.</p>
+<p>Next, we need to check for missing values:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co">#sum columns values of na</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                              Bankrupt. 
+                                                      0 
+ROA.C..before.interest.and.depreciation.before.interest 
+                                                      0 
+                 ROA.A..before.interest.and...after.tax 
+                                                      0 
+      ROA.B..before.interest.and.depreciation.after.tax 
+                                                      0 
+                                 Operating.Gross.Margin 
+                                                      0 
+                            Realized.Sales.Gross.Margin 
+                                                      0 
+                                  Operating.Profit.Rate 
+                                                      0 
+                              Pre.tax.net.Interest.Rate 
+                                                      0 
+                            After.tax.net.Interest.Rate 
+                                                      0 
+            Non.industry.income.and.expenditure.revenue 
+                                                      0 
+                   Continuous.interest.rate..after.tax. 
+                                                      0 
+                                 Operating.Expense.Rate 
+                                                      0 
+                  Research.and.development.expense.rate 
+                                                      0 
+                                         Cash.flow.rate 
+                                                      0 
+                    Interest.bearing.debt.interest.rate 
+                                                      0 
+                                           Tax.rate..A. 
+                                                      0 
+                                Net.Value.Per.Share..B. 
+                                                      0 
+                                Net.Value.Per.Share..A. 
+                                                      0 
+                                Net.Value.Per.Share..C. 
+                                                      0 
+                Persistent.EPS.in.the.Last.Four.Seasons 
+                                                      0 
+                                    Cash.Flow.Per.Share 
+                                                      0 
+                             Revenue.Per.Share..Yuan... 
+                                                      0 
+                    Operating.Profit.Per.Share..Yuan... 
+                                                      0 
+               Per.Share.Net.profit.before.tax..Yuan... 
+                                                      0 
+                Realized.Sales.Gross.Profit.Growth.Rate 
+                                                      0 
+                           Operating.Profit.Growth.Rate 
+                                                      0 
+                       After.tax.Net.Profit.Growth.Rate 
+                                                      0 
+                         Regular.Net.Profit.Growth.Rate 
+                                                      0 
+                      Continuous.Net.Profit.Growth.Rate 
+                                                      0 
+                                Total.Asset.Growth.Rate 
+                                                      0 
+                                  Net.Value.Growth.Rate 
+                                                      0 
+                   Total.Asset.Return.Growth.Rate.Ratio 
+                                                      0 
+                                    Cash.Reinvestment.. 
+                                                      0 
+                                          Current.Ratio 
+                                                      0 
+                                            Quick.Ratio 
+                                                      0 
+                                 Interest.Expense.Ratio 
+                                                      0 
+                             Total.debt.Total.net.worth 
+                                                      0 
+                                           Debt.ratio.. 
+                                                      0 
+                                       Net.worth.Assets 
+                                                      0 
+                   Long.term.fund.suitability.ratio..A. 
+                                                      0 
+                                   Borrowing.dependency 
+                                                      0 
+                       Contingent.liabilities.Net.worth 
+                                                      0 
+                       Operating.profit.Paid.in.capital 
+                                                      0 
+                  Net.profit.before.tax.Paid.in.capital 
+                                                      0 
+            Inventory.and.accounts.receivable.Net.value 
+                                                      0 
+                                   Total.Asset.Turnover 
+                                                      0 
+                           Accounts.Receivable.Turnover 
+                                                      0 
+                                Average.Collection.Days 
+                                                      0 
+                        Inventory.Turnover.Rate..times. 
+                                                      0 
+                        Fixed.Assets.Turnover.Frequency 
+                                                      0 
+                        Net.Worth.Turnover.Rate..times. 
+                                                      0 
+                                     Revenue.per.person 
+                                                      0 
+                            Operating.profit.per.person 
+                                                      0 
+                             Allocation.rate.per.person 
+                                                      0 
+                        Working.Capital.to.Total.Assets 
+                                                      0 
+                              Quick.Assets.Total.Assets 
+                                                      0 
+                            Current.Assets.Total.Assets 
+                                                      0 
+                                      Cash.Total.Assets 
+                                                      0 
+                         Quick.Assets.Current.Liability 
+                                                      0 
+                                 Cash.Current.Liability 
+                                                      0 
+                            Current.Liability.to.Assets 
+                                                      0 
+                           Operating.Funds.to.Liability 
+                                                      0 
+                              Inventory.Working.Capital 
+                                                      0 
+                            Inventory.Current.Liability 
+                                                      0 
+                          Current.Liabilities.Liability 
+                                                      0 
+                                 Working.Capital.Equity 
+                                                      0 
+                             Current.Liabilities.Equity 
+                                                      0 
+                  Long.term.Liability.to.Current.Assets 
+                                                      0 
+                      Retained.Earnings.to.Total.Assets 
+                                                      0 
+                             Total.income.Total.expense 
+                                                      0 
+                                   Total.expense.Assets 
+                                                      0 
+                            Current.Asset.Turnover.Rate 
+                                                      0 
+                              Quick.Asset.Turnover.Rate 
+                                                      0 
+                         Working.capitcal.Turnover.Rate 
+                                                      0 
+                                     Cash.Turnover.Rate 
+                                                      0 
+                                     Cash.Flow.to.Sales 
+                                                      0 
+                                 Fixed.Assets.to.Assets 
+                                                      0 
+                         Current.Liability.to.Liability 
+                                                      0 
+                            Current.Liability.to.Equity 
+                                                      0 
+                          Equity.to.Long.term.Liability 
+                                                      0 
+                              Cash.Flow.to.Total.Assets 
+                                                      0 
+                                 Cash.Flow.to.Liability 
+                                                      0 
+                                          CFO.to.Assets 
+                                                      0 
+                                    Cash.Flow.to.Equity 
+                                                      0 
+                    Current.Liability.to.Current.Assets 
+                                                      0 
+                                  Liability.Assets.Flag 
+                                                      0 
+                             Net.Income.to.Total.Assets 
+                                                      0 
+                              Total.assets.to.GNP.price 
+                                                      0 
+                                     No.credit.Interval 
+                                                      0 
+                                  Gross.Profit.to.Sales 
+                                                      0 
+                     Net.Income.to.Stockholder.s.Equity 
+                                                      0 
+                                    Liability.to.Equity 
+                                                      0 
+                     Degree.of.Financial.Leverage..DFL. 
+                                                      0 
+     Interest.Coverage.Ratio..Interest.expense.to.EBIT. 
+                                                      0 
+                                        Net.Income.Flag 
+                                                      0 
+                                    Equity.to.Liability 
+                                                      0 </code></pre>
+</div>
+</div>
+<p>There is no missing data. This matches the description of the dataset from the source.</p>
+<p>These variable names are long and difficult to read. Next, let’s rename the variables for ease of use further downstream.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co">#move names out to csv for easier human readable format and to create new vector of names</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">names</span>(data))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(d, <span class="st">"names.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since the output is difficult to read, I moved the variables to a csv file and opened in excel to look through the named variables and decide on what to call them. I’ve mapped these new names to the existing variables below using the Tidyverse. I’ve also coerced the integer variables to factors.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co">#use rename() to rename variables</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#create list of variables to coerce to fctr</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>factors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"bankrupt"</span>, <span class="st">"liabAstsFlag"</span>, <span class="st">"netIncFlag"</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="co">#rename the variables</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>data1 <span class="ot">&lt;-</span> data <span class="sc">|&gt;</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bankrupt"</span> <span class="ot">=</span>    <span class="st">"Bankrupt."</span>,</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"roaC"</span> <span class="ot">=</span>    <span class="st">"ROA.C..before.interest.and.depreciation.before.interest"</span>,</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"roaA"</span> <span class="ot">=</span>    <span class="st">"ROA.A..before.interest.and...after.tax"</span>,</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"roaB"</span> <span class="ot">=</span>    <span class="st">"ROA.B..before.interest.and.depreciation.after.tax"</span>,</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"opGrsMargin"</span> <span class="ot">=</span> <span class="st">"Operating.Gross.Margin"</span>,</span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"realSlsGrsMargin"</span> <span class="ot">=</span>    <span class="st">"Realized.Sales.Gross.Margin"</span>,</span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"opPrftRate"</span> <span class="ot">=</span>  <span class="st">"Operating.Profit.Rate"</span>,</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pTaxNetInt"</span> <span class="ot">=</span>  <span class="st">"Pre.tax.net.Interest.Rate"</span>,</span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"aTaxNetInt"</span> <span class="ot">=</span>  <span class="st">"After.tax.net.Interest.Rate"</span>,</span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nonIndRevenue"</span> <span class="ot">=</span>   <span class="st">"Non.industry.income.and.expenditure.revenue"</span>,</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"contIntATax"</span> <span class="ot">=</span> <span class="st">"Continuous.interest.rate..after.tax."</span>,</span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">"opExpRate"</span> <span class="ot">=</span>   <span class="st">"Operating.Expense.Rate"</span>,</span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rndExpRate"</span> <span class="ot">=</span>  <span class="st">"Research.and.development.expense.rate"</span>,</span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cashFlRate"</span> <span class="ot">=</span>  <span class="st">"Cash.flow.rate"</span>,</span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"intBearDbtInt"</span> <span class="ot">=</span>   <span class="st">"Interest.bearing.debt.interest.rate"</span>,</span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"taxRateA"</span> <span class="ot">=</span>    <span class="st">"Tax.rate..A."</span>,</span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nvpsB"</span> <span class="ot">=</span>   <span class="st">"Net.Value.Per.Share..B."</span>,</span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nvpsA"</span> <span class="ot">=</span>   <span class="st">"Net.Value.Per.Share..A."</span>,</span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"nvpsC"</span> <span class="ot">=</span>   <span class="st">"Net.Value.Per.Share..C."</span>,</span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"pEPSl4S"</span> <span class="ot">=</span> <span class="st">"Persistent.EPS.in.the.Last.Four.Seasons"</span>,</span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cfps"</span> <span class="ot">=</span>    <span class="st">"Cash.Flow.Per.Share"</span>,</span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">"rpsYuan"</span> <span class="ot">=</span> <span class="st">"Revenue.Per.Share..Yuan..."</span>,</span>
+<span id="cb30-30"><a href="#cb30-30" aria-hidden="true" tabindex="-1"></a>    <span class="st">"opPrftps"</span> <span class="ot">=</span>    <span class="st">"Operating.Profit.Per.Share..Yuan..."</span>,</span>
+<span id="cb30-31"><a href="#cb30-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"psNetPftbTax"</span> <span class="ot">=</span>    <span class="st">"Per.Share.Net.profit.before.tax..Yuan..."</span>,</span>
+<span id="cb30-32"><a href="#cb30-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">"realSlsGrsPrftgRate"</span> <span class="ot">=</span> <span class="st">"Realized.Sales.Gross.Profit.Growth.Rate"</span>,</span>
+<span id="cb30-33"><a href="#cb30-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">"OpPrftgRate"</span> <span class="ot">=</span> <span class="st">"Operating.Profit.Growth.Rate"</span>,</span>
+<span id="cb30-34"><a href="#cb30-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">"aTaxNetPrftgRate"</span> <span class="ot">=</span>    <span class="st">"After.tax.Net.Profit.Growth.Rate"</span>,</span>
+<span id="cb30-35"><a href="#cb30-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">"regNetPrftgRate"</span> <span class="ot">=</span> <span class="st">"Regular.Net.Profit.Growth.Rate"</span>,</span>
+<span id="cb30-36"><a href="#cb30-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">"contNetPrftgRate"</span> <span class="ot">=</span>    <span class="st">"Continuous.Net.Profit.Growth.Rate"</span>,</span>
+<span id="cb30-37"><a href="#cb30-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">"totAstgRate"</span> <span class="ot">=</span> <span class="st">"Total.Asset.Growth.Rate"</span>,</span>
+<span id="cb30-38"><a href="#cb30-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">"netValgRate"</span> <span class="ot">=</span> <span class="st">"Net.Value.Growth.Rate"</span>,</span>
+<span id="cb30-39"><a href="#cb30-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">"totAstRetGRRatio"</span> <span class="ot">=</span>    <span class="st">"Total.Asset.Return.Growth.Rate.Ratio"</span>,</span>
+<span id="cb30-40"><a href="#cb30-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cashReinvest"</span> <span class="ot">=</span>    <span class="st">"Cash.Reinvestment.."</span>,</span>
+<span id="cb30-41"><a href="#cb30-41" aria-hidden="true" tabindex="-1"></a>    <span class="st">"curRatio"</span> <span class="ot">=</span>    <span class="st">"Current.Ratio"</span>,</span>
+<span id="cb30-42"><a href="#cb30-42" aria-hidden="true" tabindex="-1"></a>    <span class="st">"quickRatio"</span> <span class="ot">=</span>  <span class="st">"Quick.Ratio"</span>,</span>
+<span id="cb30-43"><a href="#cb30-43" aria-hidden="true" tabindex="-1"></a>    <span class="st">"intExpRatio"</span> <span class="ot">=</span> <span class="st">"Interest.Expense.Ratio"</span>,</span>
+<span id="cb30-44"><a href="#cb30-44" aria-hidden="true" tabindex="-1"></a>    <span class="st">"totDetTotNetWrth"</span> <span class="ot">=</span>    <span class="st">"Total.debt.Total.net.worth"</span>,</span>
+<span id="cb30-45"><a href="#cb30-45" aria-hidden="true" tabindex="-1"></a>    <span class="st">"detRatio"</span> <span class="ot">=</span>    <span class="st">"Debt.ratio.."</span>,</span>
+<span id="cb30-46"><a href="#cb30-46" aria-hidden="true" tabindex="-1"></a>    <span class="st">"netWrtAst"</span> <span class="ot">=</span>   <span class="st">"Net.worth.Assets"</span>,</span>
+<span id="cb30-47"><a href="#cb30-47" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ltFundSuitRatioA"</span> <span class="ot">=</span>    <span class="st">"Long.term.fund.suitability.ratio..A."</span>,</span>
+<span id="cb30-48"><a href="#cb30-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">"borDepend"</span> <span class="ot">=</span>   <span class="st">"Borrowing.dependency"</span>,</span>
+<span id="cb30-49"><a href="#cb30-49" aria-hidden="true" tabindex="-1"></a>    <span class="st">"contLiabNetWorth"</span> <span class="ot">=</span>    <span class="st">"Contingent.liabilities.Net.worth"</span>,</span>
+<span id="cb30-50"><a href="#cb30-50" aria-hidden="true" tabindex="-1"></a>    <span class="st">"opPrftPaidCap"</span> <span class="ot">=</span>   <span class="st">"Operating.profit.Paid.in.capital"</span>,</span>
+<span id="cb30-51"><a href="#cb30-51" aria-hidden="true" tabindex="-1"></a>    <span class="st">"netPrftBTaxPaidCap"</span> <span class="ot">=</span>  <span class="st">"Net.profit.before.tax.Paid.in.capital"</span>,</span>
+<span id="cb30-52"><a href="#cb30-52" aria-hidden="true" tabindex="-1"></a>    <span class="st">"invtryAcctRecvNValue"</span> <span class="ot">=</span>    <span class="st">"Inventory.and.accounts.receivable.Net.value"</span>,</span>
+<span id="cb30-53"><a href="#cb30-53" aria-hidden="true" tabindex="-1"></a>    <span class="st">"totAstTurnover"</span> <span class="ot">=</span>  <span class="st">"Total.Asset.Turnover"</span>,</span>
+<span id="cb30-54"><a href="#cb30-54" aria-hidden="true" tabindex="-1"></a>    <span class="st">"acctRecTurnover"</span> <span class="ot">=</span> <span class="st">"Accounts.Receivable.Turnover"</span>,</span>
+<span id="cb30-55"><a href="#cb30-55" aria-hidden="true" tabindex="-1"></a>    <span class="st">"avgColctDays"</span> <span class="ot">=</span>    <span class="st">"Average.Collection.Days"</span>,</span>
+<span id="cb30-56"><a href="#cb30-56" aria-hidden="true" tabindex="-1"></a>    <span class="st">"invtryTurnoverRateX"</span> <span class="ot">=</span> <span class="st">"Inventory.Turnover.Rate..times."</span>,</span>
+<span id="cb30-57"><a href="#cb30-57" aria-hidden="true" tabindex="-1"></a>    <span class="st">"fixAstsTurnoverFreq"</span> <span class="ot">=</span> <span class="st">"Fixed.Assets.Turnover.Frequency"</span>,</span>
+<span id="cb30-58"><a href="#cb30-58" aria-hidden="true" tabindex="-1"></a>    <span class="st">"netWrtTurnoverRateX"</span> <span class="ot">=</span> <span class="st">"Net.Worth.Turnover.Rate..times."</span>,</span>
+<span id="cb30-59"><a href="#cb30-59" aria-hidden="true" tabindex="-1"></a>    <span class="st">"revPerPerson"</span> <span class="ot">=</span>    <span class="st">"Revenue.per.person"</span>,</span>
+<span id="cb30-60"><a href="#cb30-60" aria-hidden="true" tabindex="-1"></a>    <span class="st">"opPrftPerson"</span> <span class="ot">=</span>    <span class="st">"Operating.profit.per.person"</span>,</span>
+<span id="cb30-61"><a href="#cb30-61" aria-hidden="true" tabindex="-1"></a>    <span class="st">"allRatePerson"</span> <span class="ot">=</span>   <span class="st">"Allocation.rate.per.person"</span>,</span>
+<span id="cb30-62"><a href="#cb30-62" aria-hidden="true" tabindex="-1"></a>    <span class="st">"wrkCapTotAsts"</span> <span class="ot">=</span>   <span class="st">"Working.Capital.to.Total.Assets"</span>,</span>
+<span id="cb30-63"><a href="#cb30-63" aria-hidden="true" tabindex="-1"></a>    <span class="st">"qckAstsTotAsts"</span> <span class="ot">=</span>  <span class="st">"Quick.Assets.Total.Assets"</span>,</span>
+<span id="cb30-64"><a href="#cb30-64" aria-hidden="true" tabindex="-1"></a>    <span class="st">"curAstsTotAsts"</span> <span class="ot">=</span>  <span class="st">"Current.Assets.Total.Assets"</span>,</span>
+<span id="cb30-65"><a href="#cb30-65" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cashTotAsts"</span> <span class="ot">=</span> <span class="st">"Cash.Total.Assets"</span>,</span>
+<span id="cb30-66"><a href="#cb30-66" aria-hidden="true" tabindex="-1"></a>    <span class="st">"qckAstsCurLiab"</span> <span class="ot">=</span>  <span class="st">"Quick.Assets.Current.Liability"</span>,</span>
+<span id="cb30-67"><a href="#cb30-67" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cashCurLiab"</span> <span class="ot">=</span> <span class="st">"Cash.Current.Liability"</span>,</span>
+<span id="cb30-68"><a href="#cb30-68" aria-hidden="true" tabindex="-1"></a>    <span class="st">"curLiabToAsts"</span> <span class="ot">=</span>   <span class="st">"Current.Liability.to.Assets"</span>,</span>
+<span id="cb30-69"><a href="#cb30-69" aria-hidden="true" tabindex="-1"></a>    <span class="st">"opFundToLiab"</span> <span class="ot">=</span>    <span class="st">"Operating.Funds.to.Liability"</span>,</span>
+<span id="cb30-70"><a href="#cb30-70" aria-hidden="true" tabindex="-1"></a>    <span class="st">"invWrkCap"</span> <span class="ot">=</span>   <span class="st">"Inventory.Working.Capital"</span>,</span>
+<span id="cb30-71"><a href="#cb30-71" aria-hidden="true" tabindex="-1"></a>    <span class="st">"invCurLiab"</span> <span class="ot">=</span>  <span class="st">"Inventory.Current.Liability"</span>,</span>
+<span id="cb30-72"><a href="#cb30-72" aria-hidden="true" tabindex="-1"></a>    <span class="st">"curLiabLiab"</span> <span class="ot">=</span> <span class="st">"Current.Liabilities.Liability"</span>,</span>
+<span id="cb30-73"><a href="#cb30-73" aria-hidden="true" tabindex="-1"></a>    <span class="st">"wrkCapEq"</span> <span class="ot">=</span>    <span class="st">"Working.Capital.Equity"</span>,</span>
+<span id="cb30-74"><a href="#cb30-74" aria-hidden="true" tabindex="-1"></a>    <span class="st">"curLiabEq"</span> <span class="ot">=</span>   <span class="st">"Current.Liabilities.Equity"</span>,</span>
+<span id="cb30-75"><a href="#cb30-75" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ltLiabToCurAsts"</span> <span class="ot">=</span> <span class="st">"Long.term.Liability.to.Current.Assets"</span>,</span>
+<span id="cb30-76"><a href="#cb30-76" aria-hidden="true" tabindex="-1"></a>    <span class="st">"retEarnToTotAsts"</span> <span class="ot">=</span>    <span class="st">"Retained.Earnings.to.Total.Assets"</span>,</span>
+<span id="cb30-77"><a href="#cb30-77" aria-hidden="true" tabindex="-1"></a>    <span class="st">"totIncTotExp"</span> <span class="ot">=</span>    <span class="st">"Total.income.Total.expense"</span>,</span>
+<span id="cb30-78"><a href="#cb30-78" aria-hidden="true" tabindex="-1"></a>    <span class="st">"totExpAsts"</span> <span class="ot">=</span>  <span class="st">"Total.expense.Assets"</span>,</span>
+<span id="cb30-79"><a href="#cb30-79" aria-hidden="true" tabindex="-1"></a>    <span class="st">"curAstTurnoverRate"</span> <span class="ot">=</span>  <span class="st">"Current.Asset.Turnover.Rate"</span>,</span>
+<span id="cb30-80"><a href="#cb30-80" aria-hidden="true" tabindex="-1"></a>    <span class="st">"qckAstTurnoverRate"</span> <span class="ot">=</span>  <span class="st">"Quick.Asset.Turnover.Rate"</span>,</span>
+<span id="cb30-81"><a href="#cb30-81" aria-hidden="true" tabindex="-1"></a>    <span class="st">"wrkCapTurnoverRate"</span> <span class="ot">=</span>  <span class="st">"Working.capitcal.Turnover.Rate"</span>,</span>
+<span id="cb30-82"><a href="#cb30-82" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cashTurnoverRate"</span> <span class="ot">=</span>    <span class="st">"Cash.Turnover.Rate"</span>,</span>
+<span id="cb30-83"><a href="#cb30-83" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cashFlwToSales"</span> <span class="ot">=</span>  <span class="st">"Cash.Flow.to.Sales"</span>,</span>
+<span id="cb30-84"><a href="#cb30-84" aria-hidden="true" tabindex="-1"></a>    <span class="st">"fixAstsToLiab"</span> <span class="ot">=</span>   <span class="st">"Fixed.Assets.to.Assets"</span>,</span>
+<span id="cb30-85"><a href="#cb30-85" aria-hidden="true" tabindex="-1"></a>    <span class="st">"curLiabtToLiab"</span> <span class="ot">=</span>  <span class="st">"Current.Liability.to.Liability"</span>,</span>
+<span id="cb30-86"><a href="#cb30-86" aria-hidden="true" tabindex="-1"></a>    <span class="st">"curLiabToEq"</span> <span class="ot">=</span> <span class="st">"Current.Liability.to.Equity"</span>,</span>
+<span id="cb30-87"><a href="#cb30-87" aria-hidden="true" tabindex="-1"></a>    <span class="st">"EqToltLiab"</span> <span class="ot">=</span>  <span class="st">"Equity.to.Long.term.Liability"</span>,</span>
+<span id="cb30-88"><a href="#cb30-88" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cashFlwtToTotAsts"</span> <span class="ot">=</span>   <span class="st">"Cash.Flow.to.Total.Assets"</span>,</span>
+<span id="cb30-89"><a href="#cb30-89" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cashFlwToLiab"</span> <span class="ot">=</span>   <span class="st">"Cash.Flow.to.Liability"</span>,</span>
+<span id="cb30-90"><a href="#cb30-90" aria-hidden="true" tabindex="-1"></a>    <span class="st">"CFOtoAsts"</span> <span class="ot">=</span>   <span class="st">"CFO.to.Assets"</span>,</span>
+<span id="cb30-91"><a href="#cb30-91" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cashFlwToEq"</span> <span class="ot">=</span> <span class="st">"Cash.Flow.to.Equity"</span>,</span>
+<span id="cb30-92"><a href="#cb30-92" aria-hidden="true" tabindex="-1"></a>    <span class="st">"curLiabToCurAsts"</span> <span class="ot">=</span>    <span class="st">"Current.Liability.to.Current.Assets"</span>,</span>
+<span id="cb30-93"><a href="#cb30-93" aria-hidden="true" tabindex="-1"></a>    <span class="st">"liabAstsFlag"</span> <span class="ot">=</span>    <span class="st">"Liability.Assets.Flag"</span>,</span>
+<span id="cb30-94"><a href="#cb30-94" aria-hidden="true" tabindex="-1"></a>    <span class="st">"netIncToTotAsts"</span> <span class="ot">=</span> <span class="st">"Net.Income.to.Total.Assets"</span>,</span>
+<span id="cb30-95"><a href="#cb30-95" aria-hidden="true" tabindex="-1"></a>    <span class="st">"totAstsToGNPPrice"</span> <span class="ot">=</span>   <span class="st">"Total.assets.to.GNP.price"</span>,</span>
+<span id="cb30-96"><a href="#cb30-96" aria-hidden="true" tabindex="-1"></a>    <span class="st">"noCredInt"</span> <span class="ot">=</span>   <span class="st">"No.credit.Interval"</span>,</span>
+<span id="cb30-97"><a href="#cb30-97" aria-hidden="true" tabindex="-1"></a>    <span class="st">"grsPrftToSales"</span> <span class="ot">=</span>  <span class="st">"Gross.Profit.to.Sales"</span>,</span>
+<span id="cb30-98"><a href="#cb30-98" aria-hidden="true" tabindex="-1"></a>    <span class="st">"netIncToStkhldrEq"</span> <span class="ot">=</span>   <span class="st">"Net.Income.to.Stockholder.s.Equity"</span>,</span>
+<span id="cb30-99"><a href="#cb30-99" aria-hidden="true" tabindex="-1"></a>    <span class="st">"liabToEq"</span> <span class="ot">=</span>    <span class="st">"Liability.to.Equity"</span>,</span>
+<span id="cb30-100"><a href="#cb30-100" aria-hidden="true" tabindex="-1"></a>    <span class="st">"DFL"</span> <span class="ot">=</span> <span class="st">"Degree.of.Financial.Leverage..DFL."</span>,</span>
+<span id="cb30-101"><a href="#cb30-101" aria-hidden="true" tabindex="-1"></a>    <span class="st">"intCovRatioIntExpToEBIT"</span> <span class="ot">=</span> <span class="st">"Interest.Coverage.Ratio..Interest.expense.to.EBIT."</span>,</span>
+<span id="cb30-102"><a href="#cb30-102" aria-hidden="true" tabindex="-1"></a>    <span class="st">"netIncFlag"</span> <span class="ot">=</span>  <span class="st">"Net.Income.Flag"</span>,</span>
+<span id="cb30-103"><a href="#cb30-103" aria-hidden="true" tabindex="-1"></a>    <span class="st">"eqToLiab"</span> <span class="ot">=</span>    <span class="st">"Equity.to.Liability"</span></span>
+<span id="cb30-104"><a href="#cb30-104" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb30-105"><a href="#cb30-105" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate_at</span>(factors, factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co">#I used this code chunk to check the output from above, but it is large and messy and hard to read.  I've silenced this code for publication.</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#str(data1)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, let’s check to see if the factor variables make sense:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">#check for unique values in the flag variables</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>ua <span class="ot">&lt;-</span> <span class="fu">unique</span>(data1<span class="sc">$</span>liabAstsFlag)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>ub <span class="ot">&lt;-</span> <span class="fu">unique</span>(data1<span class="sc">$</span>netIncFlag)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>uab <span class="ot">&lt;-</span> <span class="fu">rbind</span>(ua, ub)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>uab</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   [,1] [,2]
+ua    1    2
+ub    1    1</code></pre>
+</div>
+</div>
+<p>A value of 1 in all rows of netIncFlag does not add any value, we’ll remove this from the table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>data2 <span class="ot">&lt;-</span> data1 <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="st">"netIncFlag"</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "bankrupt"                "roaC"                   
+ [3] "roaA"                    "roaB"                   
+ [5] "opGrsMargin"             "realSlsGrsMargin"       
+ [7] "opPrftRate"              "pTaxNetInt"             
+ [9] "aTaxNetInt"              "nonIndRevenue"          
+[11] "contIntATax"             "opExpRate"              
+[13] "rndExpRate"              "cashFlRate"             
+[15] "intBearDbtInt"           "taxRateA"               
+[17] "nvpsB"                   "nvpsA"                  
+[19] "nvpsC"                   "pEPSl4S"                
+[21] "cfps"                    "rpsYuan"                
+[23] "opPrftps"                "psNetPftbTax"           
+[25] "realSlsGrsPrftgRate"     "OpPrftgRate"            
+[27] "aTaxNetPrftgRate"        "regNetPrftgRate"        
+[29] "contNetPrftgRate"        "totAstgRate"            
+[31] "netValgRate"             "totAstRetGRRatio"       
+[33] "cashReinvest"            "curRatio"               
+[35] "quickRatio"              "intExpRatio"            
+[37] "totDetTotNetWrth"        "detRatio"               
+[39] "netWrtAst"               "ltFundSuitRatioA"       
+[41] "borDepend"               "contLiabNetWorth"       
+[43] "opPrftPaidCap"           "netPrftBTaxPaidCap"     
+[45] "invtryAcctRecvNValue"    "totAstTurnover"         
+[47] "acctRecTurnover"         "avgColctDays"           
+[49] "invtryTurnoverRateX"     "fixAstsTurnoverFreq"    
+[51] "netWrtTurnoverRateX"     "revPerPerson"           
+[53] "opPrftPerson"            "allRatePerson"          
+[55] "wrkCapTotAsts"           "qckAstsTotAsts"         
+[57] "curAstsTotAsts"          "cashTotAsts"            
+[59] "qckAstsCurLiab"          "cashCurLiab"            
+[61] "curLiabToAsts"           "opFundToLiab"           
+[63] "invWrkCap"               "invCurLiab"             
+[65] "curLiabLiab"             "wrkCapEq"               
+[67] "curLiabEq"               "ltLiabToCurAsts"        
+[69] "retEarnToTotAsts"        "totIncTotExp"           
+[71] "totExpAsts"              "curAstTurnoverRate"     
+[73] "qckAstTurnoverRate"      "wrkCapTurnoverRate"     
+[75] "cashTurnoverRate"        "cashFlwToSales"         
+[77] "fixAstsToLiab"           "curLiabtToLiab"         
+[79] "curLiabToEq"             "EqToltLiab"             
+[81] "cashFlwtToTotAsts"       "cashFlwToLiab"          
+[83] "CFOtoAsts"               "cashFlwToEq"            
+[85] "curLiabToCurAsts"        "liabAstsFlag"           
+[87] "netIncToTotAsts"         "totAstsToGNPPrice"      
+[89] "noCredInt"               "grsPrftToSales"         
+[91] "netIncToStkhldrEq"       "liabToEq"               
+[93] "DFL"                     "intCovRatioIntExpToEBIT"
+[95] "eqToLiab"               </code></pre>
+</div>
+</div>
+<p>During initial evaluation of potential dataset to use for this project, I briefly tried to model the Taiwanese Bankruptcy Prediction dataset using a logistic regression model and it did not converge. We’ll reproduce that here:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co">#quick test fit using all variables with logistic regression model</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>logitMod <span class="ot">&lt;-</span> <span class="fu">glm</span>(bankrupt <span class="sc">~</span> ., <span class="at">data =</span> data2, <span class="at">family=</span><span class="fu">binomial</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: glm.fit: algorithm did not converge</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
+</div>
+</div>
+<p>This is the same warning I got in my original evaluation of the datasets, “algoritm did not converge”. This may be due to collinearity between the myriad variables. We can evaluate correlation of the variables below.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create data frame of numeric values without the factors for evaluation of correlation</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>numData <span class="ot">&lt;-</span> data2 <span class="sc">|&gt;</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric))</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>fullCorr <span class="ot">&lt;-</span> (<span class="fu">cor</span>(numData))</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>longCorr <span class="ot">&lt;-</span> <span class="fu">cor_gather</span>(fullCorr)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co">#sort and filter correlation </span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>longCorr1 <span class="ot">&lt;-</span> longCorr <span class="sc">|&gt;</span></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(cor)) <span class="sc">|&gt;</span></span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cor <span class="sc">&lt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> cor <span class="sc">&gt;</span> <span class="fl">0.7</span>)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>longCorr1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 140 × 3
+   var1             var2               cor
+   &lt;chr&gt;            &lt;chr&gt;            &lt;dbl&gt;
+ 1 curLiabtToLiab   curLiabLiab       1   
+ 2 curLiabToEq      curLiabEq         1   
+ 3 curLiabLiab      curLiabtToLiab    1   
+ 4 curLiabEq        curLiabToEq       1   
+ 5 grsPrftToSales   opGrsMargin       1.00
+ 6 opGrsMargin      grsPrftToSales    1.00
+ 7 nvpsC            nvpsA             1.00
+ 8 nvpsA            nvpsC             1.00
+ 9 realSlsGrsMargin opGrsMargin       1.00
+10 opGrsMargin      realSlsGrsMargin  1.00
+# ℹ 130 more rows</code></pre>
+</div>
+</div>
+<p>I’ve tabled correlation for values less than 1.0, which would be self correlation (diagonal values), and arbitrarily set correlation to be greater than 0.7 for visualization. This will create a range of correlation values where we can at least evalute the variables and see if it is clear that they may be a linear combination of a correlated variable. Correlation between some variables that contain the same terms (eg. Liability, Gross Margin), seem to be strongly correlated. It makes sense that these could possibly be linear combinations of each other.</p>
+<p>Below is a visual demonstration of Principal Components Analysis output. The numeric data are centered and scaled, and each feature’s contribution to overall variations in the dataset are determined. The proportion of the variability explained can be used to reduce the dimensionality. We will use this concept in the kNN model training.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co">#evaluate principal components</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(numData, <span class="at">center=</span><span class="cn">TRUE</span>, <span class="at">scale.=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Plot the Proportion of Variance Explained by Principal Components</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co">#square the sd and sum the vars to generate variance proportion attributable to each feature variable</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>pcaData <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">Component =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(pca<span class="sc">$</span>sdev),</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Variance =</span> pca<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span><span class="fu">sum</span>(pca<span class="sc">$</span>sdev<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="co">#plot scree plot</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pcaData, <span class="fu">aes</span>(<span class="at">x=</span>Component, <span class="at">y=</span>Variance)) <span class="sc">+</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill=</span><span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Principle Components"</span>) <span class="sc">+</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Proportion of Variance Explained"</span>) <span class="sc">+</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"PCA Scree Plot"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This plot shows the proportion of the variability explained by the components ~70 and above are visually imperceptible.</p>
+</section>
+<section id="creation-of-training-and-test-splits" class="level3">
+<h3 class="anchored" data-anchor-id="creation-of-training-and-test-splits">Creation of Training and Test Splits</h3>
+<p>First we’ll create a training and test split with 70% of the data in the training dataset and 30% in the test dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set seed for reproducibility and create 70/30 split</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(data2<span class="sc">$</span>bankrupt, <span class="at">p=</span><span class="fl">0.7</span>, <span class="at">list=</span><span class="cn">FALSE</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>bankrupt_train <span class="ot">&lt;-</span> data2[train_index, ]</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>bankrupt_test <span class="ot">&lt;-</span> data2[<span class="sc">-</span>train_index, ]</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(bankrupt_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   bankrupt      roaC      roaA      roaB opGrsMargin realSlsGrsMargin
+1         1 0.3705943 0.4243894 0.4057498   0.6014572        0.6014572
+4         1 0.3998440 0.4512647 0.4577333   0.5835411        0.5835411
+5         1 0.4650222 0.5384322 0.5222978   0.5987835        0.5987835
+7         0 0.3909228 0.4457043 0.4361583   0.6199498        0.6199498
+11        0 0.4824745 0.5675425 0.5381980   0.6140259        0.6140259
+12        0 0.4444011 0.5497165 0.4989560   0.6237118        0.6237118
+   opPrftRate pTaxNetInt aTaxNetInt nonIndRevenue contIntATax    opExpRate
+1   0.9989692  0.7968871  0.8088094     0.3026464   0.7809849 1.256969e-04
+4   0.9986997  0.7969670  0.8089656     0.3033495   0.7812410 1.078888e-04
+5   0.9989731  0.7973661  0.8093037     0.3034750   0.7815500 7.890000e+09
+7   0.9989931  0.7970119  0.8089604     0.3028144   0.7811801 3.984834e-04
+11  0.9989784  0.7975350  0.8094597     0.3037590   0.7816295 3.181160e-04
+12  0.9989753  0.7974429  0.8093891     0.3036045   0.7813732 4.766536e-04
+   rndExpRate cashFlRate intBearDbtInt taxRateA     nvpsB     nvpsA     nvpsC
+1    0.00e+00  0.4581431  0.0007250725        0 0.1479499 0.1479499 0.1479499
+4    0.00e+00  0.4657054  0.0004490449        0 0.1541865 0.1541865 0.1541865
+5    0.00e+00  0.4627463  0.0006860686        0 0.1675024 0.1675024 0.1675024
+7    7.30e+08  0.4610201  0.0008050805        0 0.1588218 0.1588218 0.1588218
+11   1.90e+09  0.4648180  0.0005490549        0 0.1829253 0.1829253 0.1829253
+12   1.21e+09  0.4654907  0.0007030703        0 0.1738654 0.1738654 0.1738654
+     pEPSl4S      cfps    rpsYuan   opPrftps psNetPftbTax realSlsGrsPrftgRate
+1  0.1691406 0.3116644 0.01755978 0.09592053    0.1387362          0.02210228
+4  0.1937222 0.3216736 0.01436847 0.07776240    0.1486028          0.02204607
+5  0.2125366 0.3191625 0.02968979 0.09689765    0.1684115          0.02209591
+7  0.1614825 0.3166867 0.03091489 0.09991043    0.1289448          0.02211225
+11 0.2189657 0.3191625 0.01553307 0.09649051    0.1785795          0.02210696
+12 0.2046894 0.3198698 0.01141915 0.09600195    0.1724787          0.02205068
+   OpPrftgRate aTaxNetPrftgRate regNetPrftgRate contNetPrftgRate totAstgRate
+1    0.8481950        0.6889795       0.6889795        0.2175354    4.98e+09
+4    0.8480055        0.6891095       0.6891095        0.2175682    4.88e+09
+5    0.8482582        0.6896969       0.6896969        0.2176256    5.51e+09
+7    0.8483225        0.6885899       0.6885899        0.2176045    5.72e+09
+11   0.8482382        0.6893597       0.6893597        0.2175802    7.47e+08
+12   0.8479371        0.6893520       0.6893520        0.2172966    5.73e+09
+    netValgRate totAstRetGRRatio cashReinvest    curRatio  quickRatio
+1  0.0003269773        0.2631000    0.3637253 0.002258963 0.001207755
+4  0.0003824259        0.2633712    0.3840766 0.004194059 0.002896491
+5  0.0004389476        0.2652182    0.3796897 0.006022446 0.003727447
+7  0.0003517570        0.2630324    0.3753027 0.004672060 0.002869042
+11 0.0004485550        0.2639011    0.3742782 0.006097329 0.003449214
+12 0.0004550681        0.2639128    0.3799411 0.008628990 0.005122978
+   intExpRatio totDetTotNetWrth   detRatio netWrtAst ltFundSuitRatioA borDepend
+1    0.6299513      0.021265924 0.20757626 0.7924237      0.005024455 0.3902844
+4    0.6302284      0.009572402 0.15146476 0.8485352      0.005046924 0.3797427
+5    0.6360550      0.005149600 0.10650905 0.8934909      0.005303319 0.3750254
+7    0.6299879      0.024441222 0.21610182 0.7838982      0.005005044 0.3849990
+11   0.6312369      0.004932564 0.10357650 0.8964235      0.005810576 0.3741800
+12   0.6320958      0.004292397 0.09438583 0.9056142      0.005414220 0.3731130
+   contLiabNetWorth opPrftPaidCap netPrftBTaxPaidCap invtryAcctRecvNValue
+1       0.006478502    0.09588483          0.1377573            0.3980357
+4       0.005365848    0.07772729          0.1475605            0.3979245
+5       0.006623525    0.09692706          0.1674610            0.4000788
+7       0.008043897    0.09986646          0.1279391            0.4005745
+11      0.008129814    0.09647109          0.1776110            0.3956617
+12      0.006969021    0.09596626          0.1715255            0.3972278
+   totAstTurnover acctRecTurnover avgColctDays invtryTurnoverRateX
+1      0.08695652    0.0018138841  0.003487364        1.820926e-04
+4      0.08995502    0.0019660556  0.003214967        7.130000e+09
+5      0.17541229    0.0014486726  0.004366891        1.633674e-04
+7      0.10044978    0.0016617126  0.003805018        1.620299e-04
+11     0.07646177    0.0019396792  0.003258517        1.562977e-04
+12     0.06296852    0.0008075234  0.007838031        6.550000e+08
+   fixAstsTurnoverFreq netWrtTurnoverRateX revPerPerson opPrftPerson
+1         1.165007e-04          0.03290323   0.03416418    0.3929129
+4         9.150000e+09          0.02806452   0.01546348    0.3784966
+5         2.935211e-04          0.04016129   0.05811142    0.3943715
+7         1.452476e-04          0.04080645   0.01145954    0.3931729
+11        1.747510e-04          0.02112903   0.01389480    0.3927546
+12        1.066662e-04          0.01967742   0.01042551    0.3924380
+   allRatePerson wrkCapTotAsts qckAstsTotAsts curAstsTotAsts cashTotAsts
+1    0.037135302     0.6727753     0.16667296      0.1906430 0.004094406
+4    0.021319990     0.7257542     0.16157453      0.2258149 0.018850625
+5    0.023988212     0.7518225     0.26032988      0.3583802 0.014160974
+7    0.009703141     0.7294165     0.25509317      0.2952210 0.022988598
+11   0.010748686     0.7512043     0.05990057      0.1017452 0.002056836
+12   0.012858373     0.7691139     0.14001811      0.2189426 0.020542229
+   qckAstsCurLiab  cashCurLiab curLiabToAsts opFundToLiab invWrkCap  invCurLiab
+1     0.001996771 0.0001473360    0.14730845    0.3340152 0.2769202 0.001035990
+4     0.002961238 0.0010106464    0.09871463    0.3487164 0.2765803 0.003540148
+5     0.004274771 0.0006804636    0.11019485    0.3446388 0.2879127 0.004868570
+7     0.003973830 0.0010503118    0.11592041    0.3400805 0.2766433 0.002159349
+11    0.003626043 0.0003358965    0.03208680    0.3436799 0.2851007 0.006735041
+12    0.005415676 0.0022537355    0.04799481    0.3465566 0.2775985 0.008649940
+   curLiabLiab  wrkCapEq curLiabEq ltLiabToCurAsts retEarnToTotAsts
+1    0.6762692 0.7212746 0.3390770     0.025592368        0.9032248
+4    0.6158484 0.7298249 0.3315090     0.022165200        0.9069022
+5    0.9750066 0.7319996 0.3307263     0.000000000        0.9138502
+7    0.5080888 0.7287308 0.3373920     0.009347426        0.9114414
+11   0.2831941 0.7319590 0.3274847     0.064126528        0.9428290
+12   0.4710284 0.7330453 0.3280420     0.017846406        0.9329552
+   totIncTotExp totExpAsts curAstTurnoverRate qckAstTurnoverRate
+1   0.002021613 0.06485571       7.010000e+08           6.55e+09
+4   0.001831359 0.02416107       8.140000e+09           6.05e+09
+5   0.002223930 0.02638525       6.680000e+09           5.05e+09
+7   0.002120736 0.09280231       1.058011e-04           9.56e+09
+11  0.002337657 0.02880240       4.760000e+09           2.92e+09
+12  0.002256752 0.05695228       1.276006e-04           8.36e+09
+   wrkCapTurnoverRate cashTurnoverRate cashFlwToSales fixAstsToLiab
+1           0.5938305         4.58e+08      0.6715677     0.4242058
+4           0.5938888         2.03e+09      0.6715192     0.5591440
+5           0.5939153         8.24e+08      0.6715631     0.3095549
+7           0.5938934         2.39e+09      0.6715623     0.3558538
+11          0.5939156         3.08e+08      0.6715723     0.2254907
+12          0.5939441         3.37e+08      0.6715744     0.3283762
+   curLiabtToLiab curLiabToEq EqToltLiab cashFlwtToTotAsts cashFlwToLiab
+1       0.6762692   0.3390770  0.1265495         0.6375554     0.4586091
+4       0.6158484   0.3315090  0.1207605         0.5790393     0.4485179
+5       0.9750066   0.3307263  0.1109332         0.6223741     0.4544109
+7       0.5080888   0.3373920  0.1205614         0.6304191     0.4577854
+11      0.2831941   0.3274847  0.1209426         0.6429500     0.4592795
+12      0.4710284   0.3280420  0.1164586         0.6445698     0.4597103
+   CFOtoAsts cashFlwToEq curLiabToCurAsts liabAstsFlag netIncToTotAsts
+1  0.5203819   0.3129049       0.11825048            0       0.7168453
+4  0.6041051   0.3023823       0.06724962            0       0.7395545
+5  0.5784689   0.3115672       0.04772537            0       0.7950159
+7  0.5606530   0.3102964       0.06076512            0       0.7366191
+11 0.5748457   0.3145692       0.04716635            0       0.8141106
+12 0.5829027   0.3147913       0.03371160            0       0.8048870
+   totAstsToGNPPrice noCredInt grsPrftToSales netIncToStkhldrEq  liabToEq
+1        0.009219440 0.6228790      0.6014533         0.8278902 0.2902019
+4        0.003252475 0.6229287      0.5835376         0.8346971 0.2817212
+5        0.003877563 0.6235207      0.5987815         0.8399727 0.2785138
+7        0.018371872 0.6236554      0.6199489         0.8299798 0.2925041
+11       0.076972257 0.6236872      0.6140212         0.8413371 0.2783564
+12       0.007317881 0.6237236      0.6237092         0.8406497 0.2778921
+          DFL intCovRatioIntExpToEBIT   eqToLiab
+1  0.02660063               0.5640501 0.01646874
+4  0.02669663               0.5646634 0.02398233
+5  0.02475185               0.5756166 0.03549020
+7  0.02662230               0.5642001 0.01566307
+11 0.02697109               0.5658915 0.03657169
+12 0.02739086               0.5669826 0.04038102</code></pre>
+</div>
+</div>
+</section>
+<section id="k-nearest-neighbors" class="level3">
+<h3 class="anchored" data-anchor-id="k-nearest-neighbors">k-Nearest Neighbors</h3>
+<p>Let’s try KNN first to see if that model will work with this many variables. The k-Nearest Neighbors (kNN) model is a non-parametric model that uses the tuning parameter k to evaluate each k-nearest values. In the case of classification tasks (which is what we are doing here), for each value of k, the majority of the k-nearest values determines the class (bankrupt or not). For example, with k=1, each observation determines the class of itself. If k=3, then if 2 of the observations are class=0 and 1 observation is class=1, then the majority rule is that that combination of predictors will be classified as class=0. This model does not perform variable selection, and we have included Principle Components Analysis (PCA) as a preprocessing step in the model training below, which does perform variable shrinkage. This is necessary due to the highly correlated nature of this dataset.</p>
+<p>For the purposes of using PCA, we will center and scale the data. This is not strictly necessary if we are using kNN modeling without PCA.</p>
+<p>We will tune the optimal value of the tuning parameter (k) based on the training accuracy.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set seed for cv fold generation</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="co">#create grid for evaluating k</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>kgrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">k=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">50</span>, <span class="at">by=</span><span class="dv">1</span>))</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co">#create knn model with 10 fold cv</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>knnMod <span class="ot">&lt;-</span> <span class="fu">train</span>(bankrupt <span class="sc">~</span> .,</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">data =</span> bankrupt_train,</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">method =</span> <span class="st">"knn"</span>,</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>              <span class="at">tuneGrid =</span> kgrid,</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">preProcess =</span> <span class="fu">c</span>(<span class="st">"center"</span>, <span class="st">"scale"</span>, <span class="st">"pca"</span>),</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>              <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"CV"</span>,</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">number =</span> <span class="dv">10</span>,</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>                                      ))</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>knnMod<span class="sc">$</span>bestTune</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    k
+10 10</code></pre>
+</div>
+</div>
+<p>This looks like the best training accuracy is for k=10.</p>
+<p>Let’s show this visually:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co">#plot training accuracy by tuning parameter</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(knnMod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We’ll also calculate the NIR (no information rate), which is just the proportion of the observations that fall in the most prevalent category. The model above should perform better than the NIR, or it is of no value.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create table of class proportions in training dataset for calculation of NIR.</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>trainClassProp <span class="ot">&lt;-</span> <span class="fu">table</span>(bankrupt_train<span class="sc">$</span>bankrupt)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>trainClassProp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   0    1 
+4620  154 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dim(trainClassProp)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The most prevalent class is non-bankrupt company (this should be true in the training and test sets, since we split the data to have balanced proporations of the dependent variable, <code>bankrupt</code>.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co">#training NIR</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>NIRknnTrain <span class="ot">&lt;-</span> (trainClassProp[<span class="dv">1</span>]<span class="sc">/</span><span class="fu">nrow</span>(bankrupt_train))</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>NIRknnTrain</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        0 
+0.9677419 </code></pre>
+</div>
+</div>
+<p>The NIR for the kNN model is 0.9677419. The accuracy of the best tuned kNN model is 0.9694188. This is not a large improvement in training accuracy. We’ll see later if the test accuracy changes.</p>
+<p>We’ll predict with the best kNN model on the entire training dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co">#use predict() to evaluate model on training dataset</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>knnTrain <span class="ot">&lt;-</span> <span class="fu">predict</span>(knnMod, <span class="at">newdata =</span> bankrupt_train)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(knnTrain, <span class="at">obs =</span> bankrupt_train<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Accuracy     Kappa 
+0.9710934 0.2719537 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>knnConf <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(knnTrain, bankrupt_train<span class="sc">$</span>bankrupt)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>knnConf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 4609  127
+         1   11   27
+                                          
+               Accuracy : 0.9711          
+                 95% CI : (0.9659, 0.9757)
+    No Information Rate : 0.9677          
+    P-Value [Acc &gt; NIR] : 0.1006          
+                                          
+                  Kappa : 0.272           
+                                          
+ Mcnemar's Test P-Value : &lt;2e-16          
+                                          
+            Sensitivity : 0.9976          
+            Specificity : 0.1753          
+         Pos Pred Value : 0.9732          
+         Neg Pred Value : 0.7105          
+             Prevalence : 0.9677          
+         Detection Rate : 0.9654          
+   Detection Prevalence : 0.9920          
+      Balanced Accuracy : 0.5865          
+                                          
+       'Positive' Class : 0               
+                                          </code></pre>
+</div>
+</div>
+<p>The training accuracy of the tuned model is not significantly different than the NIR at the alpha=0.05 confidence level.</p>
+</section>
+<section id="regularized-logistic-regression-model-elastic-net" class="level3">
+<h3 class="anchored" data-anchor-id="regularized-logistic-regression-model-elastic-net">Regularized Logistic Regression Model (Elastic Net)</h3>
+<p>The next model we will evaluate will be the Elastic Net model, using a logic link function since the dependent variable is a binary classifier and takes on the values <code>0</code> or <code>1</code>. The elastic net combines both the L1 and L2 penalties. The L1 penalty is the absolute value of the sum of the coefficient estimates, and the L2 penalty is the sum of the squared coefficient estimates. This is a parametric model that estimates the parameters that minimizes the logistic regression model subject to both the L1 and L2 penatly. There are also two tuning parameters, alpha and lambda. This is a combination of both LASSO and Ridge regression and deals with highly correlated data better than either alone. This is why I picked Elastic Net here, since we have shown above that there is a lot of correlation between predictors in the Taiwanese Bankruptcy Prediction dataset.</p>
+<p>This model performs variable selection and can be used for inference, as there are estimated coefficients for which confidence intervals can be calculated. We will need to standardize the predictors for this model</p>
+<p>We’ll start by building a tuning grid for both all combinations of Alpha and Lambda that we want to evaluate:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create tuning grid for Elastic Net</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.05</span>)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>lambda <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fl">0.005</span>, <span class="at">to =</span> <span class="fl">0.1</span>, <span class="at">by =</span> <span class="fl">0.005</span>)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>netTuneGrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(alpha, lambda)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(netTuneGrid) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"alpha"</span>, <span class="st">"lambda"</span>)</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(netTuneGrid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  alpha lambda
+1  0.00  0.005
+2  0.05  0.005
+3  0.10  0.005
+4  0.15  0.005
+5  0.20  0.005
+6  0.25  0.005</code></pre>
+</div>
+</div>
+<p>Next, we’ll perform 10-fold cross validation on the training data using the caret workflow and glmnet() model family.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="co">#train elastic net model</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>netMod <span class="ot">&lt;-</span> <span class="fu">train</span>(bankrupt <span class="sc">~</span> ., <span class="at">data =</span> bankrupt_train,</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method =</span> <span class="st">"glmnet"</span>,</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">family =</span> <span class="st">"binomial"</span>,</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">preProcess =</span> <span class="fu">c</span>(<span class="st">"center"</span>, <span class="st">"scale"</span>),</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">tuneGrid =</span> netTuneGrid,</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>, </span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">number =</span> <span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: from glmnet C++ code (error code -98); Convergence for 98th lambda
+value not reached after maxit=100000 iterations; solutions for larger lambdas
+returned</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: from glmnet C++ code (error code -86); Convergence for 86th lambda
+value not reached after maxit=100000 iterations; solutions for larger lambdas
+returned</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: from glmnet C++ code (error code -88); Convergence for 88th lambda
+value not reached after maxit=100000 iterations; solutions for larger lambdas
+returned</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: from glmnet C++ code (error code -95); Convergence for 95th lambda
+value not reached after maxit=100000 iterations; solutions for larger lambdas
+returned</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: from glmnet C++ code (error code -93); Convergence for 93th lambda
+value not reached after maxit=100000 iterations; solutions for larger lambdas
+returned</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(netMod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co">#show the best tuning parameters</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>netMod<span class="sc">$</span>bestTune</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    alpha lambda
+145  0.35  0.025</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co">#use predict() to evaluate model on training dataset</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>netTrain <span class="ot">&lt;-</span> <span class="fu">predict</span>(netMod, <span class="at">newdata =</span> bankrupt_train)</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(netTrain, <span class="at">obs =</span> bankrupt_train<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Accuracy     Kappa 
+0.9698366 0.1839122 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>netConf <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(netTrain, bankrupt_train<span class="sc">$</span>bankrupt)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>netConf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 4613  137
+         1    7   17
+                                          
+               Accuracy : 0.9698          
+                 95% CI : (0.9646, 0.9745)
+    No Information Rate : 0.9677          
+    P-Value [Acc &gt; NIR] : 0.2197          
+                                          
+                  Kappa : 0.1839          
+                                          
+ Mcnemar's Test P-Value : &lt;2e-16          
+                                          
+            Sensitivity : 0.9985          
+            Specificity : 0.1104          
+         Pos Pred Value : 0.9712          
+         Neg Pred Value : 0.7083          
+             Prevalence : 0.9677          
+         Detection Rate : 0.9663          
+   Detection Prevalence : 0.9950          
+      Balanced Accuracy : 0.5544          
+                                          
+       'Positive' Class : 0               
+                                          </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>netMod<span class="sc">$</span>bestTune</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    alpha lambda
+145  0.35  0.025</code></pre>
+</div>
+</div>
+<p>The best Elastic Net model on the training data based on accuracy is the model with alpha = 0.35 and lambda = 0.025. The accuracy of this model is not significantly higher than the NIR. This model also takes quite a bit of time to train, ~10 minutes.</p>
+</section>
+<section id="general-additive-model-family" class="level3">
+<h3 class="anchored" data-anchor-id="general-additive-model-family">General Additive Model Family</h3>
+<p>The general additive model can be either a parametric or non-parametric model that is the linear combination of basis funtions. Below, we will use smoothing splines. The smooting splines subject the model loss function minimization to a regularization penalty, lambda. Lambda and degrees of freedom are the tuning parameters for smoothing spline models. The smoothing spline model is non-parametric, and cannot be used to perform inference on the predictors. The model performs shrinkage of the predictors, but does not select variables. Because of collinearity concerns, however, I did decide to use Principal Components Analysis prior to training the model.</p>
+<p>I believe collinearity is causing a problem with the original training dataset. I was unable to fit the general additive model with all variables, even using the smoothing splines as a regularization technique. Let’s check the correlation in the training dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create data frame of numeric values without the factors for evaluation of correlation</span></span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>numDataTrain <span class="ot">&lt;-</span> bankrupt_train <span class="sc">|&gt;</span></span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">where</span>(is.numeric))</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>fullCorrTrain <span class="ot">&lt;-</span> (<span class="fu">cor</span>(numDataTrain))</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>longCorrTrain <span class="ot">&lt;-</span> <span class="fu">cor_gather</span>(fullCorrTrain)</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a><span class="co">#sort and filter correlation </span></span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>longCorrTrain <span class="ot">&lt;-</span> longCorrTrain <span class="sc">|&gt;</span></span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(cor)) <span class="sc">|&gt;</span></span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(cor <span class="sc">&lt;</span> <span class="dv">1</span> <span class="sc">&amp;</span> cor <span class="sc">&gt;</span> <span class="fl">0.7</span>)</span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>longCorrTrain</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 146 × 3
+   var1             var2               cor
+   &lt;chr&gt;            &lt;chr&gt;            &lt;dbl&gt;
+ 1 grsPrftToSales   opGrsMargin       1.00
+ 2 opGrsMargin      grsPrftToSales    1.00
+ 3 nvpsC            nvpsA             1.00
+ 4 nvpsA            nvpsC             1.00
+ 5 aTaxNetInt       pTaxNetInt        1.00
+ 6 pTaxNetInt       aTaxNetInt        1.00
+ 7 realSlsGrsMargin opGrsMargin       1.00
+ 8 opGrsMargin      realSlsGrsMargin  1.00
+ 9 grsPrftToSales   realSlsGrsMargin  1.00
+10 realSlsGrsMargin grsPrftToSales    1.00
+# ℹ 136 more rows</code></pre>
+</div>
+</div>
+<p>Some of the variables have correlation of 1.0. We need to deal with these, since I cannot train the model using all of the predictors in the training dataset <em>(errors not shown)</em>. We’ll use PCA in the pre-processing, which also necessitates centering and scaling the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set seed for reproducibility</span></span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="co">#train smooting splines (gamSpline() family) using 10 fold cv.  </span></span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a><span class="co">#model takes ~40 minutes to train</span></span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>gamMod <span class="ot">&lt;-</span> <span class="fu">train</span>(bankrupt <span class="sc">~</span> ., <span class="at">data =</span> bankrupt_train,</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method =</span> <span class="st">"gamSpline"</span>,</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">family =</span> <span class="st">"binomial"</span>,</span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">preProcess =</span> <span class="fu">c</span>(<span class="st">"center"</span>, <span class="st">"scale"</span>,<span class="st">"pca"</span>),</span>
+<span id="cb76-9"><a href="#cb76-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>, </span>
+<span id="cb76-10"><a href="#cb76-10" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">number =</span> <span class="dv">10</span>),</span>
+<span id="cb76-11"><a href="#cb76-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">tuneGrid =</span> <span class="fu">data.frame</span>(<span class="at">df =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">7</span>))</span>
+<span id="cb76-12"><a href="#cb76-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: gam</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: splines</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: foreach</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'foreach' was built under R version 4.2.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'foreach'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:purrr':
+
+    accumulate, when</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loaded gam 1.22-5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gamMod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co">#get best tuning parameter</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>gamMod<span class="sc">$</span>bestTune</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  df
+3  4</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co">#generate and display confusion matrix for training metrics</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>gamTrain <span class="ot">&lt;-</span> <span class="fu">predict</span>(gamMod, <span class="at">newdata =</span> bankrupt_train)</span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(gamTrain, <span class="at">obs =</span> bankrupt_train<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Accuracy     Kappa 
+0.9775869 0.5226651 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>gamConf <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(gamTrain, bankrupt_train<span class="sc">$</span>bankrupt)</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a>gamConf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 4606   93
+         1   14   61
+                                         
+               Accuracy : 0.9776         
+                 95% CI : (0.973, 0.9816)
+    No Information Rate : 0.9677         
+    P-Value [Acc &gt; NIR] : 3.047e-05      
+                                         
+                  Kappa : 0.5227         
+                                         
+ Mcnemar's Test P-Value : 4.680e-14      
+                                         
+            Sensitivity : 0.9970         
+            Specificity : 0.3961         
+         Pos Pred Value : 0.9802         
+         Neg Pred Value : 0.8133         
+             Prevalence : 0.9677         
+         Detection Rate : 0.9648         
+   Detection Prevalence : 0.9843         
+      Balanced Accuracy : 0.6965         
+                                         
+       'Positive' Class : 0              
+                                         </code></pre>
+</div>
+</div>
+<p>The training accuracy of this model is significantly different than the NIR. The model that has the highest training accuracy has 4 degrees of freedom and kappa = 0.5226651.</p>
+</section>
+<section id="single-classification-tree-model" class="level3">
+<h3 class="anchored" data-anchor-id="single-classification-tree-model">Single Classification Tree Model</h3>
+<p>The classification tree is a model that splits the data using recursive binary splitting. This technique evaluates every possible split in the data, and selects the split point where the RSS is minimized. This is repeated down each branch of the tree until a certain stopping point is reached or each branch reaches a terminal node. Leaving a fully grown tree will result in overfitting the data.</p>
+<p>The classification tree does not perform variable selection and cannot be used to perform inference, although variable importance is supplied and has a roughly similar interpretation in that variables are ranked in their relative contribution to the models predictive ability.</p>
+<p>The classification tree is a non-parametric model and therefore cannot be used to perform inference. There is one tuning parameter, alpha, which is the complexity parameter. This complexity paramater may be used to <em>prune</em> the tree to find the “best” model. We do not have to pre-process the predictors for this model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co">#train smooting splines (gamSpline() family) using 10 fold cv.</span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="co">#train tree model using 10 fold cv</span></span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>treeMod <span class="ot">&lt;-</span> <span class="fu">train</span>(bankrupt <span class="sc">~</span> ., <span class="at">data =</span> bankrupt_train,</span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method =</span> <span class="st">"rpart"</span>,</span>
+<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>, </span>
+<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">number =</span> <span class="dv">10</span>))</span>
+<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-9"><a href="#cb91-9" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(treeMod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co">#get best tuning parameter</span></span>
+<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>treeMod<span class="sc">$</span>bestTune</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          cp
+2 0.01948052</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="co">#predict on the training dataset and calculate accuracy, and plot confusion matrix</span></span>
+<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>treeTrain <span class="ot">&lt;-</span> <span class="fu">predict</span>(treeMod, <span class="at">newdata =</span> bankrupt_train)</span>
+<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(treeTrain, <span class="at">obs =</span> bankrupt_train<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Accuracy     Kappa 
+0.9746544 0.4163684 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a>treeConf <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(treeTrain, bankrupt_train<span class="sc">$</span>bankrupt)</span>
+<span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>treeConf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 4608  109
+         1   12   45
+                                          
+               Accuracy : 0.9747          
+                 95% CI : (0.9698, 0.9789)
+    No Information Rate : 0.9677          
+    P-Value [Acc &gt; NIR] : 0.002993        
+                                          
+                  Kappa : 0.4164          
+                                          
+ Mcnemar's Test P-Value : &lt; 2.2e-16       
+                                          
+            Sensitivity : 0.9974          
+            Specificity : 0.2922          
+         Pos Pred Value : 0.9769          
+         Neg Pred Value : 0.7895          
+             Prevalence : 0.9677          
+         Detection Rate : 0.9652          
+   Detection Prevalence : 0.9881          
+      Balanced Accuracy : 0.6448          
+                                          
+       'Positive' Class : 0               
+                                          </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="co">#plot variable importance</span></span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">varImp</span>(treeMod))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Visualizing 93 predictors is challenging to impossible in this graph. In fact, the importance is diplayed as 0 below an importance of 6.97:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co">#display importance numbers in a dataframe.</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="fu">varImp</span>(treeMod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>rpart variable importance
+
+  only 20 most important variables shown (out of 94)
+
+                   Overall
+netValgRate        100.000
+pEPSl4S             81.732
+netIncToStkhldrEq   54.311
+netPrftBTaxPaidCap  51.257
+psNetPftbTax        50.053
+totDetTotNetWrth    22.577
+detRatio            22.577
+nvpsA               20.349
+quickRatio          19.494
+netWrtAst           16.659
+totAstsToGNPPrice   13.764
+nvpsC               11.614
+roaB                 8.778
+nvpsB                8.735
+contIntATax          8.574
+curLiabToAsts        6.978
+allRatePerson        0.000
+curAstTurnoverRate   0.000
+cashCurLiab          0.000
+netIncToTotAsts      0.000</code></pre>
+</div>
+</div>
+<p>I’ll remove the importance variables that are 0 for more interpretability.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co">#plot most important variables for visualization</span></span>
+<span id="cb101-2"><a href="#cb101-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">varImp</span>(treeMod)</span>
+<span id="cb101-3"><a href="#cb101-3" aria-hidden="true" tabindex="-1"></a>a[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> a[[<span class="dv">1</span>]] <span class="sc">|&gt;</span></span>
+<span id="cb101-4"><a href="#cb101-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Overall <span class="sc">&gt;</span> <span class="dv">5</span>)</span>
+<span id="cb101-5"><a href="#cb101-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The tree classification model predicts more accurately that the NIR at the alpha=0.05 confidence level with training accuracy of . It also trains relatively quickly compared to the GAM/Smoothing Spline model.</p>
+</section>
+<section id="ensemble-tree-method" class="level3">
+<h3 class="anchored" data-anchor-id="ensemble-tree-method">Ensemble Tree Method</h3>
+<p>The ensemble tree models combine different techniques to arrive at more stable predictions on unseen data by using bootstrapping to randomly sample from the dataset, applying the model, then combining the models into an aggregate model. We’ll use the <strong>Random Forest</strong> model here to help account for any possibility that a strong predictor will commonly be the first split. The Random Forest model will randomly select a number of pre-defined predictors (p) for evaluating each split. When p=P, where P is the number of predictors in the full model, this will be the Bagged Tree model. This strategy will allow us to evaluate “two” models at once.</p>
+<p>The ensemble tree models are extensions of the classification tree model used above. This model is non-parametric. The tuning parameter in the model below is the number of predictors to randomly select at each split (<code>mtry</code>). This model, like the classification tree, cannot be used for inference, but there is still the importance that can be interpreted in a similar fashion. The importance provides information as to which variables are most important for prediction, but does not perform variable selection. The data can be used as-is and do not need to be standardized.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set seed for reproducibility</span></span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="co">#train rendom forest model with 1:nrow random predictors at each node</span></span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>forestGrid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">.mtry=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>(<span class="fu">ncol</span>(bankrupt_train)<span class="sc">-</span><span class="dv">1</span>)))</span>
+<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a><span class="co">#model takes ~30 minutes to train</span></span>
+<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a>rfMod <span class="ot">&lt;-</span> <span class="fu">train</span>(bankrupt <span class="sc">~</span> ., <span class="at">data =</span> bankrupt_train,</span>
+<span id="cb102-7"><a href="#cb102-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method =</span> <span class="st">"rf"</span>,</span>
+<span id="cb102-8"><a href="#cb102-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">metric =</span> <span class="st">"Accuracy"</span>,</span>
+<span id="cb102-9"><a href="#cb102-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">tuneGrid =</span> forestGrid, </span>
+<span id="cb102-10"><a href="#cb102-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"oob"</span>, </span>
+<span id="cb102-11"><a href="#cb102-11" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">number =</span> <span class="dv">1000</span>))</span>
+<span id="cb102-12"><a href="#cb102-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb102-13"><a href="#cb102-13" aria-hidden="true" tabindex="-1"></a><span class="co">#plot accuracy</span></span>
+<span id="cb102-14"><a href="#cb102-14" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rfMod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a>rfMod<span class="sc">$</span>bestTune</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   mtry
+49   49</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co">#predict on the training dataset and calculate accuracy, and plot confusion matrix</span></span>
+<span id="cb105-2"><a href="#cb105-2" aria-hidden="true" tabindex="-1"></a>rfTrain <span class="ot">&lt;-</span> <span class="fu">predict</span>(rfMod, <span class="at">newdata =</span> bankrupt_train)</span>
+<span id="cb105-3"><a href="#cb105-3" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(rfTrain, <span class="at">obs =</span> bankrupt_train<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Accuracy    Kappa 
+       1        1 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb107"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb107-1"><a href="#cb107-1" aria-hidden="true" tabindex="-1"></a>rfConf <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(rfTrain, bankrupt_train<span class="sc">$</span>bankrupt)</span>
+<span id="cb107-2"><a href="#cb107-2" aria-hidden="true" tabindex="-1"></a>rfConf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 4620    0
+         1    0  154
+                                     
+               Accuracy : 1          
+                 95% CI : (0.9992, 1)
+    No Information Rate : 0.9677     
+    P-Value [Acc &gt; NIR] : &lt; 2.2e-16  
+                                     
+                  Kappa : 1          
+                                     
+ Mcnemar's Test P-Value : NA         
+                                     
+            Sensitivity : 1.0000     
+            Specificity : 1.0000     
+         Pos Pred Value : 1.0000     
+         Neg Pred Value : 1.0000     
+             Prevalence : 0.9677     
+         Detection Rate : 0.9677     
+   Detection Prevalence : 0.9677     
+      Balanced Accuracy : 1.0000     
+                                     
+       'Positive' Class : 0          
+                                     </code></pre>
+</div>
+</div>
+<p>This is unexpected to me…accuracy of 1. It will be intersting to see how this model works with the test dataset. Let’s see if importance makes any sense…</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb109"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb109-1"><a href="#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">varImp</span>(rfMod))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is a nice smooth curve of the relative importance of the variables. I’ll filter for Importance &lt;16 so that the most important variables are clear.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb110"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb110-1"><a href="#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="co">#shorten the importance plot to include only the most important for the fr model</span></span>
+<span id="cb110-2"><a href="#cb110-2" aria-hidden="true" tabindex="-1"></a>rfImpShort <span class="ot">&lt;-</span> <span class="fu">varImp</span>(rfMod)</span>
+<span id="cb110-3"><a href="#cb110-3" aria-hidden="true" tabindex="-1"></a>rfImpShort[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> rfImpShort[[<span class="dv">1</span>]] <span class="sc">|&gt;</span></span>
+<span id="cb110-4"><a href="#cb110-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Overall <span class="sc">&gt;</span> <span class="dv">16</span>)</span>
+<span id="cb110-5"><a href="#cb110-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rfImpShort)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Some of the same features are present in the most important variable chart from Random Forest and from the Single Classification Tree.</p>
+</section>
+<section id="support-vector-machines" class="level3">
+<h3 class="anchored" data-anchor-id="support-vector-machines">Support Vector Machines</h3>
+<p>Support verctor machines can be both parametric and non-parametric. We will be using a kernal based method (radial basis) in which we will use cross-validation to tune the tuning parameter <code>c</code>, or cost and sigma.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb111"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb111-1"><a href="#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="co">#C &lt;- exp(seq(-5,-1,len=10))</span></span>
+<span id="cb111-2"><a href="#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="co">#gamma &lt;- seq(from = 4, to = 7, by = 1)</span></span>
+<span id="cb111-3"><a href="#cb111-3" aria-hidden="true" tabindex="-1"></a><span class="co">#svTuneGrid &lt;- expand.grid(C, sigma)</span></span>
+<span id="cb111-4"><a href="#cb111-4" aria-hidden="true" tabindex="-1"></a><span class="co">#names(svTuneGrid) &lt;- c("C", "sigma")</span></span>
+<span id="cb111-5"><a href="#cb111-5" aria-hidden="true" tabindex="-1"></a><span class="co">#svTuneGrid</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb112"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb112-1"><a href="#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set seed for reproducibility</span></span>
+<span id="cb112-2"><a href="#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="co">#set.seed(10)</span></span>
+<span id="cb112-3"><a href="#cb112-3" aria-hidden="true" tabindex="-1"></a><span class="co">#create tuning grig</span></span>
+<span id="cb112-4"><a href="#cb112-4" aria-hidden="true" tabindex="-1"></a><span class="co">#svmGrid &lt;- expand.grid(C = exp(seq(-5,1,len=10)))</span></span>
+<span id="cb112-5"><a href="#cb112-5" aria-hidden="true" tabindex="-1"></a><span class="co">#train model</span></span>
+<span id="cb112-6"><a href="#cb112-6" aria-hidden="true" tabindex="-1"></a><span class="co">#svMod &lt;- train(bankrupt ~ ., data = bankrupt_train,</span></span>
+<span id="cb112-7"><a href="#cb112-7" aria-hidden="true" tabindex="-1"></a><span class="co">#                 method = "svmRadialSigma",</span></span>
+<span id="cb112-8"><a href="#cb112-8" aria-hidden="true" tabindex="-1"></a><span class="co">#                 tuneGrid = svTuneGrid, </span></span>
+<span id="cb112-9"><a href="#cb112-9" aria-hidden="true" tabindex="-1"></a><span class="co">#                 trControl = trainControl(method = "cv", </span></span>
+<span id="cb112-10"><a href="#cb112-10" aria-hidden="true" tabindex="-1"></a><span class="co">#                                          number = 10))</span></span>
+<span id="cb112-11"><a href="#cb112-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-12"><a href="#cb112-12" aria-hidden="true" tabindex="-1"></a><span class="co">#plot(svMod)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb113"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb113-1"><a href="#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co">#svMod$bestTune</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb114"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb114-1"><a href="#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co">#predict and display training confusion matrix with tuned model</span></span>
+<span id="cb114-2"><a href="#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="co">#svTrain &lt;- predict(svMod, newdata = bankrupt_train)</span></span>
+<span id="cb114-3"><a href="#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="co">#(svTrain, obs = bankrupt_train$bankrupt)</span></span>
+<span id="cb114-4"><a href="#cb114-4" aria-hidden="true" tabindex="-1"></a><span class="co">#svConf &lt;-confusionMatrix(svTrain, bankrupt_train$bankrupt)</span></span>
+<span id="cb114-5"><a href="#cb114-5" aria-hidden="true" tabindex="-1"></a><span class="co">#svConf</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It looks like the training accuracy of this model is no better than the NIR. I’ve commented out the radial SVM model above because it takes a very long time to train and doesn’t offer any additional insight for the tuning grid specified searching over sigma.</p>
+<p>I’ve recoded the same radial basis support vector machine model without searching through sigma in the tuning grid and get no better accuracy than the NIR.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb115"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb115-1"><a href="#cb115-1" aria-hidden="true" tabindex="-1"></a>svTuneGrid2 <span class="ot">&lt;-</span> (<span class="fu">seq</span>(<span class="at">from=</span><span class="sc">-</span><span class="dv">5</span>,<span class="at">to=</span><span class="sc">-</span><span class="dv">1</span>,<span class="at">by=</span><span class="dv">1</span>))</span>
+<span id="cb115-2"><a href="#cb115-2" aria-hidden="true" tabindex="-1"></a>svTuneGrid2 <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(svTuneGrid2)</span>
+<span id="cb115-3"><a href="#cb115-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(svTuneGrid2) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"C"</span>)</span>
+<span id="cb115-4"><a href="#cb115-4" aria-hidden="true" tabindex="-1"></a>svTuneGrid2 <span class="ot">&lt;-</span> svTuneGrid2 <span class="sc">|&gt;</span></span>
+<span id="cb115-5"><a href="#cb115-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">C=</span><span class="fu">exp</span>(C))</span>
+<span id="cb115-6"><a href="#cb115-6" aria-hidden="true" tabindex="-1"></a><span class="co">#svTuneGrid2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb116"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb116-1"><a href="#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set seed for reproducibility</span></span>
+<span id="cb116-2"><a href="#cb116-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb116-3"><a href="#cb116-3" aria-hidden="true" tabindex="-1"></a><span class="co">#create tuning grig</span></span>
+<span id="cb116-4"><a href="#cb116-4" aria-hidden="true" tabindex="-1"></a><span class="co">#svmGrid &lt;- expand.grid(C = exp(seq(-5,1,len=10)))</span></span>
+<span id="cb116-5"><a href="#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="co">#train model</span></span>
+<span id="cb116-6"><a href="#cb116-6" aria-hidden="true" tabindex="-1"></a>svMod2 <span class="ot">&lt;-</span> <span class="fu">train</span>(bankrupt <span class="sc">~</span> ., <span class="at">data =</span> bankrupt_train,</span>
+<span id="cb116-7"><a href="#cb116-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">method =</span> <span class="st">"svmRadialCost"</span>,</span>
+<span id="cb116-8"><a href="#cb116-8" aria-hidden="true" tabindex="-1"></a>                 <span class="at">tuneGrid =</span> svTuneGrid2, </span>
+<span id="cb116-9"><a href="#cb116-9" aria-hidden="true" tabindex="-1"></a>                 <span class="at">trControl =</span> <span class="fu">trainControl</span>(<span class="at">method =</span> <span class="st">"cv"</span>, </span>
+<span id="cb116-10"><a href="#cb116-10" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">number =</span> <span class="dv">10</span>))</span>
+<span id="cb116-11"><a href="#cb116-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-12"><a href="#cb116-12" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(svMod2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-44-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb117"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb117-1"><a href="#cb117-1" aria-hidden="true" tabindex="-1"></a>svMod2<span class="sc">$</span>bestTune</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>            C
+1 0.006737947</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb119"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb119-1"><a href="#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="co">#predict and display training confusion matrix with tuned model</span></span>
+<span id="cb119-2"><a href="#cb119-2" aria-hidden="true" tabindex="-1"></a>svTrain2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(svMod2, <span class="at">newdata =</span> bankrupt_train)</span>
+<span id="cb119-3"><a href="#cb119-3" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(svTrain2, <span class="at">obs =</span> bankrupt_train<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Accuracy     Kappa 
+0.9677419 0.0000000 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb121"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb121-1"><a href="#cb121-1" aria-hidden="true" tabindex="-1"></a>svConf2 <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(svTrain2, bankrupt_train<span class="sc">$</span>bankrupt)</span>
+<span id="cb121-2"><a href="#cb121-2" aria-hidden="true" tabindex="-1"></a>svConf2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 4620  154
+         1    0    0
+                                          
+               Accuracy : 0.9677          
+                 95% CI : (0.9623, 0.9726)
+    No Information Rate : 0.9677          
+    P-Value [Acc &gt; NIR] : 0.5214          
+                                          
+                  Kappa : 0               
+                                          
+ Mcnemar's Test P-Value : &lt;2e-16          
+                                          
+            Sensitivity : 1.0000          
+            Specificity : 0.0000          
+         Pos Pred Value : 0.9677          
+         Neg Pred Value :    NaN          
+             Prevalence : 0.9677          
+         Detection Rate : 0.9677          
+   Detection Prevalence : 1.0000          
+      Balanced Accuracy : 0.5000          
+                                          
+       'Positive' Class : 0               
+                                          </code></pre>
+</div>
+</div>
+<p>The radial SVM seems to not perform very well based on training cross validation accuracy. I decided to evaluate the radial SVM since it should fit non-linear data well. There may be a different SVM model that fits better but this would take significant time and computing power to sort out.</p>
+</section>
+</section>
+<section id="predicting-on-the-test-set" class="level2">
+<h2 class="anchored" data-anchor-id="predicting-on-the-test-set">Predicting on the Test Set</h2>
+<p>So far, we’ve partitioned the data into a training and test set, performed cross validation and tuning on the training dataset, and refit the best models for each family with the optimal tuning parameters (where appropriate) onto the full training dataset. Now, we need to see how each of the tuned models performs on unseen data. We will use <code>predict()</code> on the test dataset for each model and compare accuracy.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb123"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb123-1"><a href="#cb123-1" aria-hidden="true" tabindex="-1"></a>knnTest <span class="ot">&lt;-</span> <span class="fu">predict</span>(knnMod, <span class="at">newdata=</span>bankrupt_test)</span>
+<span id="cb123-2"><a href="#cb123-2" aria-hidden="true" tabindex="-1"></a>netTest <span class="ot">&lt;-</span> <span class="fu">predict</span>(netMod, <span class="at">newdata=</span>bankrupt_test)</span>
+<span id="cb123-3"><a href="#cb123-3" aria-hidden="true" tabindex="-1"></a>gamTest <span class="ot">&lt;-</span> <span class="fu">predict</span>(gamMod, <span class="at">newdata=</span>bankrupt_test)</span>
+<span id="cb123-4"><a href="#cb123-4" aria-hidden="true" tabindex="-1"></a>treeTest <span class="ot">&lt;-</span> <span class="fu">predict</span>(treeMod, <span class="at">newdata=</span>bankrupt_test)</span>
+<span id="cb123-5"><a href="#cb123-5" aria-hidden="true" tabindex="-1"></a>rfTest <span class="ot">&lt;-</span> <span class="fu">predict</span>(rfMod, <span class="at">newdata=</span>bankrupt_test)</span>
+<span id="cb123-6"><a href="#cb123-6" aria-hidden="true" tabindex="-1"></a>svTest <span class="ot">&lt;-</span> <span class="fu">predict</span>(svMod2, <span class="at">newdata=</span>bankrupt_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now, let’s check the test prediction accuracy</p>
+<section id="knn-test-prediction-accuracyconfusion-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="knn-test-prediction-accuracyconfusion-matrix">kNN Test Prediction Accuracy/Confusion Matrix</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb124"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb124-1"><a href="#cb124-1" aria-hidden="true" tabindex="-1"></a><span class="co">#confusion matrix for test precdiction accuracy</span></span>
+<span id="cb124-2"><a href="#cb124-2" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(knnTest, <span class="at">obs =</span> bankrupt_test<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Accuracy     Kappa 
+0.9691932 0.2307945 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb126"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb126-1"><a href="#cb126-1" aria-hidden="true" tabindex="-1"></a>knnTestConf <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(knnTest, bankrupt_test<span class="sc">$</span>bankrupt)</span>
+<span id="cb126-2"><a href="#cb126-2" aria-hidden="true" tabindex="-1"></a>knnTestConf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 1972   56
+         1    7   10
+                                          
+               Accuracy : 0.9692          
+                 95% CI : (0.9608, 0.9762)
+    No Information Rate : 0.9677          
+    P-Value [Acc &gt; NIR] : 0.384           
+                                          
+                  Kappa : 0.2308          
+                                          
+ Mcnemar's Test P-Value : 1.472e-09       
+                                          
+            Sensitivity : 0.9965          
+            Specificity : 0.1515          
+         Pos Pred Value : 0.9724          
+         Neg Pred Value : 0.5882          
+             Prevalence : 0.9677          
+         Detection Rate : 0.9643          
+   Detection Prevalence : 0.9917          
+      Balanced Accuracy : 0.5740          
+                                          
+       'Positive' Class : 0               
+                                          </code></pre>
+</div>
+</div>
+</section>
+<section id="elastic-net-test-prediction-accuracyconfusion-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="elastic-net-test-prediction-accuracyconfusion-matrix">Elastic Net Test Prediction Accuracy/Confusion Matrix</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb128"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb128-1"><a href="#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="co">#confusion matrix for test precdiction accuracy</span></span>
+<span id="cb128-2"><a href="#cb128-2" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(netTest, <span class="at">obs =</span> bankrupt_test<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Accuracy     Kappa 
+0.9691932 0.1939702 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb130"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb130-1"><a href="#cb130-1" aria-hidden="true" tabindex="-1"></a>netTestConf <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(netTest, bankrupt_test<span class="sc">$</span>bankrupt)</span>
+<span id="cb130-2"><a href="#cb130-2" aria-hidden="true" tabindex="-1"></a>netTestConf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 1974   58
+         1    5    8
+                                          
+               Accuracy : 0.9692          
+                 95% CI : (0.9608, 0.9762)
+    No Information Rate : 0.9677          
+    P-Value [Acc &gt; NIR] : 0.384           
+                                          
+                  Kappa : 0.194           
+                                          
+ Mcnemar's Test P-Value : 5.701e-11       
+                                          
+            Sensitivity : 0.9975          
+            Specificity : 0.1212          
+         Pos Pred Value : 0.9715          
+         Neg Pred Value : 0.6154          
+             Prevalence : 0.9677          
+         Detection Rate : 0.9653          
+   Detection Prevalence : 0.9936          
+      Balanced Accuracy : 0.5593          
+                                          
+       'Positive' Class : 0               
+                                          </code></pre>
+</div>
+</div>
+</section>
+<section id="gamsmoothing-splines-test-prediction-accuracyconfusion-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="gamsmoothing-splines-test-prediction-accuracyconfusion-matrix">GAM/Smoothing Splines Test Prediction Accuracy/Confusion Matrix</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb132"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb132-1"><a href="#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="co">#confusion matrix for test precdiction accuracy</span></span>
+<span id="cb132-2"><a href="#cb132-2" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(gamTest, <span class="at">obs =</span> bankrupt_test<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Accuracy     Kappa 
+0.9701711 0.3822211 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb134"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb134-1"><a href="#cb134-1" aria-hidden="true" tabindex="-1"></a>gamTestConf <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(gamTest, bankrupt_test<span class="sc">$</span>bankrupt)</span>
+<span id="cb134-2"><a href="#cb134-2" aria-hidden="true" tabindex="-1"></a>gamTestConf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 1964   46
+         1   15   20
+                                          
+               Accuracy : 0.9702          
+                 95% CI : (0.9618, 0.9771)
+    No Information Rate : 0.9677          
+    P-Value [Acc &gt; NIR] : 0.2912799       
+                                          
+                  Kappa : 0.3822          
+                                          
+ Mcnemar's Test P-Value : 0.0001225       
+                                          
+            Sensitivity : 0.9924          
+            Specificity : 0.3030          
+         Pos Pred Value : 0.9771          
+         Neg Pred Value : 0.5714          
+             Prevalence : 0.9677          
+         Detection Rate : 0.9604          
+   Detection Prevalence : 0.9829          
+      Balanced Accuracy : 0.6477          
+                                          
+       'Positive' Class : 0               
+                                          </code></pre>
+</div>
+</div>
+</section>
+<section id="single-classification-tree-test-prediction-accuracyconfusion-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="single-classification-tree-test-prediction-accuracyconfusion-matrix">Single Classification Tree Test Prediction Accuracy/Confusion Matrix</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="co">#confusion matrix for test precdiction accuracy</span></span>
+<span id="cb136-2"><a href="#cb136-2" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(treeTest, <span class="at">obs =</span> bankrupt_test<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Accuracy     Kappa 
+0.9667482 0.2312115 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb138"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb138-1"><a href="#cb138-1" aria-hidden="true" tabindex="-1"></a>treeTestConf <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(treeTest, bankrupt_test<span class="sc">$</span>bankrupt)</span>
+<span id="cb138-2"><a href="#cb138-2" aria-hidden="true" tabindex="-1"></a>treeTestConf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 1966   55
+         1   13   11
+                                         
+               Accuracy : 0.9667         
+                 95% CI : (0.958, 0.9741)
+    No Information Rate : 0.9677         
+    P-Value [Acc &gt; NIR] : 0.6294         
+                                         
+                  Kappa : 0.2312         
+                                         
+ Mcnemar's Test P-Value : 6.627e-07      
+                                         
+            Sensitivity : 0.9934         
+            Specificity : 0.1667         
+         Pos Pred Value : 0.9728         
+         Neg Pred Value : 0.4583         
+             Prevalence : 0.9677         
+         Detection Rate : 0.9614         
+   Detection Prevalence : 0.9883         
+      Balanced Accuracy : 0.5800         
+                                         
+       'Positive' Class : 0              
+                                         </code></pre>
+</div>
+</div>
+</section>
+<section id="random-forest-single-classification-tree-test-prediction-accuracyconfusion-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="random-forest-single-classification-tree-test-prediction-accuracyconfusion-matrix">Random Forest Single Classification Tree Test Prediction Accuracy/Confusion Matrix</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb140"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb140-1"><a href="#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co">#confusion matrix for test precdiction accuracy</span></span>
+<span id="cb140-2"><a href="#cb140-2" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(rfTest, <span class="at">obs =</span> bankrupt_test<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Accuracy     Kappa 
+0.9721271 0.3040522 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a>rfTestConf <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(rfTest, bankrupt_test<span class="sc">$</span>bankrupt)</span>
+<span id="cb142-2"><a href="#cb142-2" aria-hidden="true" tabindex="-1"></a>rfTestConf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 1975   53
+         1    4   13
+                                         
+               Accuracy : 0.9721         
+                 95% CI : (0.964, 0.9788)
+    No Information Rate : 0.9677         
+    P-Value [Acc &gt; NIR] : 0.143          
+                                         
+                  Kappa : 0.3041         
+                                         
+ Mcnemar's Test P-Value : 2.047e-10      
+                                         
+            Sensitivity : 0.9980         
+            Specificity : 0.1970         
+         Pos Pred Value : 0.9739         
+         Neg Pred Value : 0.7647         
+             Prevalence : 0.9677         
+         Detection Rate : 0.9658         
+   Detection Prevalence : 0.9917         
+      Balanced Accuracy : 0.5975         
+                                         
+       'Positive' Class : 0              
+                                         </code></pre>
+</div>
+</div>
+</section>
+<section id="support-vector-machine-test-prediction-accuracyconfusion-matrix" class="level3">
+<h3 class="anchored" data-anchor-id="support-vector-machine-test-prediction-accuracyconfusion-matrix">Support Vector Machine Test Prediction Accuracy/Confusion Matrix</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="co">#confusion matrix for test precdiction accuracy</span></span>
+<span id="cb144-2"><a href="#cb144-2" aria-hidden="true" tabindex="-1"></a><span class="fu">postResample</span>(svTest, <span class="at">obs =</span> bankrupt_test<span class="sc">$</span>bankrupt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Accuracy     Kappa 
+0.9677262 0.0000000 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a>svTestConf <span class="ot">&lt;-</span><span class="fu">confusionMatrix</span>(svTest, bankrupt_test<span class="sc">$</span>bankrupt)</span>
+<span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a>svTestConf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 1979   66
+         1    0    0
+                                         
+               Accuracy : 0.9677         
+                 95% CI : (0.9591, 0.975)
+    No Information Rate : 0.9677         
+    P-Value [Acc &gt; NIR] : 0.5327         
+                                         
+                  Kappa : 0              
+                                         
+ Mcnemar's Test P-Value : 1.235e-15      
+                                         
+            Sensitivity : 1.0000         
+            Specificity : 0.0000         
+         Pos Pred Value : 0.9677         
+         Neg Pred Value :    NaN         
+             Prevalence : 0.9677         
+         Detection Rate : 0.9677         
+   Detection Prevalence : 1.0000         
+      Balanced Accuracy : 0.5000         
+                                         
+       'Positive' Class : 0              
+                                         </code></pre>
+</div>
+</div>
+<p>None of the models are significantly different from the NIR at the alpha=0.05 confidence level. In the interest of picking a “best” model, I would pick the Random Forest model as it has the highest absolute accuracy.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb148"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb148-1"><a href="#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="co">#extrac test accuracies for tabling.</span></span>
+<span id="cb148-2"><a href="#cb148-2" aria-hidden="true" tabindex="-1"></a>kA <span class="ot">&lt;-</span> knnTestConf[[<span class="dv">3</span>]][<span class="dv">1</span>]</span>
+<span id="cb148-3"><a href="#cb148-3" aria-hidden="true" tabindex="-1"></a>netA <span class="ot">&lt;-</span> netTestConf[[<span class="dv">3</span>]][<span class="dv">1</span>]</span>
+<span id="cb148-4"><a href="#cb148-4" aria-hidden="true" tabindex="-1"></a>gA <span class="ot">&lt;-</span> gamTestConf[[<span class="dv">3</span>]][<span class="dv">1</span>]</span>
+<span id="cb148-5"><a href="#cb148-5" aria-hidden="true" tabindex="-1"></a>tA <span class="ot">&lt;-</span> treeTestConf[[<span class="dv">3</span>]][<span class="dv">1</span>]</span>
+<span id="cb148-6"><a href="#cb148-6" aria-hidden="true" tabindex="-1"></a>rfA <span class="ot">&lt;-</span> rfTestConf[[<span class="dv">3</span>]][<span class="dv">1</span>]</span>
+<span id="cb148-7"><a href="#cb148-7" aria-hidden="true" tabindex="-1"></a>svA <span class="ot">&lt;-</span> svTestConf[[<span class="dv">3</span>]][<span class="dv">1</span>]</span>
+<span id="cb148-8"><a href="#cb148-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb148-9"><a href="#cb148-9" aria-hidden="true" tabindex="-1"></a>testAcc <span class="ot">&lt;-</span> <span class="fu">c</span>(kA, netA, gA, tA, rfA, svA)</span>
+<span id="cb148-10"><a href="#cb148-10" aria-hidden="true" tabindex="-1"></a>nameAcc <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"kNN"</span>, <span class="st">"Elastic Net"</span>, <span class="st">"Smoothing Splines"</span>, <span class="st">"Single Tree"</span>, <span class="st">"Random Forest"</span>, <span class="st">"Support Vector Machine"</span>)</span>
+<span id="cb148-11"><a href="#cb148-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb148-12"><a href="#cb148-12" aria-hidden="true" tabindex="-1"></a><span class="co">#create table of accuracy values</span></span>
+<span id="cb148-13"><a href="#cb148-13" aria-hidden="true" tabindex="-1"></a>accTbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">rbind</span>(nameAcc, testAcc))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: The `x` argument of `as_tibble.matrix()` must have unique column names if
+`.name_repair` is omitted as of tibble 2.0.0.
+ℹ Using compatibility `.name_repair`.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb150"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb150-1"><a href="#cb150-1" aria-hidden="true" tabindex="-1"></a>accTbl</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  Accuracy         V2               V3                V4             V5    V6   
+  &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;             &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;
+1 kNN              Elastic Net      Smoothing Splines Single Tree    Rand… Supp…
+2 0.96919315403423 0.96919315403423 0.970171149144254 0.96674816625… 0.97… 0.96…</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="full-data-set-fit" class="level2">
+<h2 class="anchored" data-anchor-id="full-data-set-fit">Full Data Set Fit</h2>
+<p>Lastly, we’ll fit the “best” model, the Random Forest model on the full dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a><span class="co">#set seed for reproducibility</span></span>
+<span id="cb152-2"><a href="#cb152-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">10</span>)</span>
+<span id="cb152-3"><a href="#cb152-3" aria-hidden="true" tabindex="-1"></a><span class="co">#extract m from the best model</span></span>
+<span id="cb152-4"><a href="#cb152-4" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> rfMod<span class="sc">$</span>bestTune[[<span class="dv">1</span>]]</span>
+<span id="cb152-5"><a href="#cb152-5" aria-hidden="true" tabindex="-1"></a>rfFull <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(bankrupt <span class="sc">~</span> ., <span class="at">data=</span>data2,</span>
+<span id="cb152-6"><a href="#cb152-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">importance =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb152-7"><a href="#cb152-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">type =</span> <span class="st">"classification"</span>,</span>
+<span id="cb152-8"><a href="#cb152-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mtry=</span>m)</span>
+<span id="cb152-9"><a href="#cb152-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb152-10"><a href="#cb152-10" aria-hidden="true" tabindex="-1"></a>rfFull<span class="sc">$</span>confusion</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     0  1 class.error
+0 6575 24 0.003636915
+1  167 53 0.759090909</code></pre>
+</div>
+</div>
+<p>We’ll also calculate the NIR for the full model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create table of class proportions in training dataset for calculation of NIR.</span></span>
+<span id="cb154-2"><a href="#cb154-2" aria-hidden="true" tabindex="-1"></a>fullClassProp <span class="ot">&lt;-</span> <span class="fu">table</span>(data2<span class="sc">$</span>bankrupt)</span>
+<span id="cb154-3"><a href="#cb154-3" aria-hidden="true" tabindex="-1"></a>fullClassProp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   0    1 
+6599  220 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb156"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb156-1"><a href="#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dim(trainClassProp)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The most prevalent class is non-bankrupt company (this should be true in the training and test sets, since we split the data to have balanced proporations of the dependent variable, <code>bankrupt</code>.)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb157"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb157-1"><a href="#cb157-1" aria-hidden="true" tabindex="-1"></a><span class="co">#full NIR</span></span>
+<span id="cb157-2"><a href="#cb157-2" aria-hidden="true" tabindex="-1"></a>NIR <span class="ot">&lt;-</span> (fullClassProp[<span class="dv">1</span>]<span class="sc">/</span><span class="fu">nrow</span>(data2))</span>
+<span id="cb157-3"><a href="#cb157-3" aria-hidden="true" tabindex="-1"></a>NIR</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        0 
+0.9677372 </code></pre>
+</div>
+</div>
+<p>Now let’s calculate the full model accuracy to compare to the NIR:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb159"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb159-1"><a href="#cb159-1" aria-hidden="true" tabindex="-1"></a>correct <span class="ot">&lt;-</span> rfFull<span class="sc">$</span>confusion[<span class="dv">1</span>,<span class="dv">1</span>]<span class="sc">+</span>rfFull<span class="sc">$</span>confusion[<span class="dv">2</span>,<span class="dv">2</span>]</span>
+<span id="cb159-2"><a href="#cb159-2" aria-hidden="true" tabindex="-1"></a>fullModAccuracy <span class="ot">&lt;-</span> correct<span class="sc">/</span><span class="fu">nrow</span>(data2)</span>
+<span id="cb159-3"><a href="#cb159-3" aria-hidden="true" tabindex="-1"></a>fullModAccuracy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.97199</code></pre>
+</div>
+</div>
+<p>SO the full model still appears to be slightly better than the NIR by absolute difference. Regardless, the model could potentially predict risk of defaul/bankruptcy using business metrics where the bankruptcy event has not occured. For example, if a venture capital fund was trying to invest in 30 businesses, a model that could predict risk of bankruptcy at 97% would lead to ~1 company defaulting out of the 30 investments. This would be a way to understand the risk when ~ 30% of venture capitol investments fail and investors lose all of their capital <a href="https://www.hbs.edu/news/Pages/item.aspx?num=214">3</a>. If this model could be applied to US based businesses and these data are available, it could be part of a comprehensive risk evaluation during the investment period.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
