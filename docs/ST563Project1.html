@@ -140,6 +140,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
+<p><code>txe{r setup, include=FALSE} #keep quiet on the warnings thrown, only warnings in this file were for library loads knitr::opts_chunk$set(warning = FALSE, message = FALSE)</code></p>
 <p>Let’s load necessary libraries before we begin:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -767,7 +768,7 @@ ub    1    1</code></pre>
 <pre><code>Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred</code></pre>
 </div>
 </div>
-<p>This is the same warning I got in my original evaluation of the datasets, “algoritm did not converge”. This may be due to collinearity between the myriad variables. We can evaluate correlation of the variables below.</p>
+<p>A warning is thrown here, but i have suppressed it for sake of document readability. It is the same warning I got in my original evaluation of the datasets, “algoritm did not converge”. This may be due to collinearity between the myriad variables. We can evaluate correlation of the variables below.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co">#create data frame of numeric values without the factors for evaluation of correlation</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>numData <span class="ot">&lt;-</span> data2 <span class="sc">|&gt;</span></span>
@@ -1983,7 +1984,7 @@ Prediction    0    1
 <span id="cb152-5"><a href="#cb152-5" aria-hidden="true" tabindex="-1"></a>rfFull <span class="ot">&lt;-</span> <span class="fu">randomForest</span>(bankrupt <span class="sc">~</span> ., <span class="at">data=</span>data2,</span>
 <span id="cb152-6"><a href="#cb152-6" aria-hidden="true" tabindex="-1"></a>                       <span class="at">importance =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb152-7"><a href="#cb152-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">type =</span> <span class="st">"classification"</span>,</span>
-<span id="cb152-8"><a href="#cb152-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mtry=</span>m)</span>
+<span id="cb152-8"><a href="#cb152-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mtry=</span><span class="dv">49</span>)</span>
 <span id="cb152-9"><a href="#cb152-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb152-10"><a href="#cb152-10" aria-hidden="true" tabindex="-1"></a>rfFull<span class="sc">$</span>confusion</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2024,8 +2025,25 @@ Prediction    0    1
 </div>
 </div>
 <p>SO the full model still appears to be slightly better than the NIR by absolute difference. Regardless, the model could potentially predict risk of defaul/bankruptcy using business metrics where the bankruptcy event has not occured. For example, if a venture capital fund was trying to invest in 30 businesses, a model that could predict risk of bankruptcy at 97% would lead to ~1 company defaulting out of the 30 investments. This would be a way to understand the risk when ~ 30% of venture capitol investments fail and investors lose all of their capital <a href="https://www.hbs.edu/news/Pages/item.aspx?num=214">3</a>. If this model could be applied to US based businesses and these data are available, it could be part of a comprehensive risk evaluation during the investment period.</p>
+<p>The importance of this model is not reported in percentage, so I’ll standardize the importance to be a percentage of the total importance for plotting.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb161"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb161-1"><a href="#cb161-1" aria-hidden="true" tabindex="-1"></a><span class="co">#display importance</span></span>
+<span id="cb161-2"><a href="#cb161-2" aria-hidden="true" tabindex="-1"></a><span class="fu">varImpPlot</span>(rfFull, <span class="at">sort =</span><span class="cn">TRUE</span>, <span class="at">n.var=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ST563Project1_files/figure-html/unnamed-chunk-59-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="summary" class="level3">
+<h3 class="anchored" data-anchor-id="summary">Summary</h3>
+<p>Now that we have a visual of the top 10 most important variables for this Random Forest prediction model, we could investigate these variables further to see exactly what they are and how they may be able to be controlled within a business or how investments could risked based on what an investor can find during the due diligence period. It is interesting that the top three important variables for both metrics are the same. It would be very interesting to see how this model performs on US based companies and would need to be explored further.</p>
+<p>While the models we explored may not be different than the no imformation rate, it could still be useful, as you would not necessarily know the bankrupt status of a company when you are evaluating them and would be looking to the future. This should be investigated for the Taiwanese Bankruptcy Prediction dataset as well to see if it can be determined how the data were collected and if the data were collected before or after bankruptcy filing.</p>
 
 
+</section>
 </section>
 </section>
 

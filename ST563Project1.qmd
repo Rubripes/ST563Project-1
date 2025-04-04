@@ -3,7 +3,13 @@ title: "ST563Project1"
 author: "Matt Bray"
 format: html
 editor: visual
+code-overflow: wrap
 ---
+
+```{r}{r setup, include=FALSE}
+#keep quiet on the warnings thrown, only warnings in this file were for library loads
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
 
 Let's load necessary libraries before we begin:
 
@@ -216,7 +222,7 @@ During initial evaluation of potential dataset to use for this project, I briefl
 logitMod <- glm(bankrupt ~ ., data = data2, family=binomial())
 ```
 
-This is the same warning I got in my original evaluation of the datasets, "algoritm did not converge". This may be due to collinearity between the myriad variables. We can evaluate correlation of the variables below.
+A warning is thrown here, but i have suppressed it for sake of document readability.  It is the same warning I got in my original evaluation of the datasets, "algoritm did not converge". This may be due to collinearity between the myriad variables. We can evaluate correlation of the variables below.
 
 ```{r}
 #create data frame of numeric values without the factors for evaluation of correlation
@@ -733,7 +739,7 @@ m <- rfMod$bestTune[[1]]
 rfFull <- randomForest(bankrupt ~ ., data=data2,
                        importance = TRUE,
                        type = "classification",
-                       mtry=m)
+                       mtry=49)
 
 rfFull$confusion
 ```
@@ -764,3 +770,14 @@ fullModAccuracy
 ```
 
 SO the full model still appears to be slightly better than the NIR by absolute difference. Regardless, the model could potentially predict risk of defaul/bankruptcy using business metrics where the bankruptcy event has not occured. For example, if a venture capital fund was trying to invest in 30 businesses, a model that could predict risk of bankruptcy at 97% would lead to \~1 company defaulting out of the 30 investments. This would be a way to understand the risk when \~ 30% of venture capitol investments fail and investors lose all of their capital [3](https://www.hbs.edu/news/Pages/item.aspx?num=214).  If this model could be applied to US based businesses and these data are available, it could be part of a comprehensive risk evaluation during the investment period.
+
+The importance of this model is not reported in percentage, so I'll standardize the importance to be a percentage of the total importance for plotting.
+```{r}
+#display importance
+varImpPlot(rfFull, sort =TRUE, n.var=10)
+
+```
+### Summary
+Now that we have a visual of the top 10 most important variables for this Random Forest prediction model, we could investigate these variables further to see exactly what they are and how they may be able to be controlled within a business or how investments could risked based on what an investor can find during the due diligence period.  It is interesting that the top three important variables for both metrics are the same. It would be very interesting to see how this model performs on US based companies and would need to be explored further.
+
+While the models we explored may not be different than the no imformation rate, it could still be useful, as you would not necessarily know the bankrupt status of a company when you are evaluating them and would be looking to the future.  This should be investigated for the `{r} dataset` dataset as well to see if it can be determined how the data were collected and if the data were collected before or after bankruptcy filing.
